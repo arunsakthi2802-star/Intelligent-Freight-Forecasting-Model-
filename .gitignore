@@ -1,0 +1,26 @@
+# Datasets and Data folders
+Maritime Routes and Tracklets/
+data/
+freight data set/
+fuel dataset/
+predictions/
+
+# Logs and Model Artifacts
+catboost_info/
+logs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+env.bak/
+venv.bak/
+
+# Environment variables
+.env
+.env.*
