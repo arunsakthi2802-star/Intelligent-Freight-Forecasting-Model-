@@ -1,0 +1,100 @@
+{
+    "candidate_vessels": [
+        {
+            "imo": "IMO1111111",
+            "name": "Ocean King",
+            "vessel_class": "PANAMAX",
+            "availability_status": "OPERATIONALLY_AVAILABLE",
+            "availability_probability": 0.76,
+            "eta_loading_port": "2024-11-14",
+            "distance_to_loading_port_nm": 500,
+            "predicted_total_cost": 616788.5,
+            "cost_per_tonne": 8.22,
+            "risk_score": 2.2,
+            "source": "AIS INFERRED"
+        },
+        {
+            "imo": "IMO2222222",
+            "name": "Sea Wave",
+            "vessel_class": "CAPESIZE",
+            "availability_status": "EN_ROUTE_TO_LOADING_PORT",
+            "availability_probability": 0.66,
+            "eta_loading_port": "2024-11-11",
+            "distance_to_loading_port_nm": 1200,
+            "predicted_total_cost": 715826.0,
+            "cost_per_tonne": 9.54,
+            "risk_score": 4.8,
+            "source": "AIS INFERRED"
+        }
+    ],
+    "low_cost_vessels": [
+        {
+            "imo": "IMO1111111",
+            "name": "Ocean King",
+            "vessel_class": "PANAMAX",
+            "availability_status": "OPERATIONALLY_AVAILABLE",
+            "availability_probability": 0.76,
+            "eta_loading_port": "2024-11-14",
+            "distance_to_loading_port_nm": 500,
+            "predicted_total_cost": 616788.5,
+            "cost_per_tonne": 8.22,
+            "risk_score": 2.2,
+            "source": "AIS INFERRED"
+        },
+        {
+            "imo": "IMO2222222",
+            "name": "Sea Wave",
+            "vessel_class": "CAPESIZE",
+            "availability_status": "EN_ROUTE_TO_LOADING_PORT",
+            "availability_probability": 0.66,
+            "eta_loading_port": "2024-11-11",
+            "distance_to_loading_port_nm": 1200,
+            "predicted_total_cost": 715826.0,
+            "cost_per_tonne": 9.54,
+            "risk_score": 4.8,
+            "source": "AIS INFERRED"
+        }
+    ],
+    "loading_forecast": {
+        "expected_hours": 15.0,
+        "weather_risk": "LOW"
+    },
+    "unloading_forecast": {
+        "expected_hours": 20.0,
+        "weather_risk": "MODERATE"
+    },
+    "weather_forecast": {
+        "loading_date": "Clear",
+        "sea_route": "Mild waves"
+    },
+    "route_options": [
+        {
+            "route_id": "R1",
+            "distance_nm": 4500,
+            "cost": 616788.5
+        }
+    ],
+    "total_cost_options": [
+        616788.5,
+        715826.0
+    ],
+    "risk": {
+        "overall_risk": "LOW",
+        "weather_delay_prob": 0.1
+    },
+    "recommended_scenarios": [
+        {
+            "imo": "IMO1111111",
+            "name": "Ocean King",
+            "vessel_class": "PANAMAX",
+            "availability_status": "OPERATIONALLY_AVAILABLE",
+            "availability_probability": 0.76,
+            "eta_loading_port": "2024-11-14",
+            "distance_to_loading_port_nm": 500,
+            "predicted_total_cost": 616788.5,
+            "cost_per_tonne": 8.22,
+            "risk_score": 2.2,
+            "source": "AIS INFERRED"
+        }
+    ]
+}

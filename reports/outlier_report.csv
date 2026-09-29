@@ -1,0 +1,5 @@
+column,outlier_count,invalid_removed
+freight_rate_usd,2,1
+oil_price,0,0
+port_waiting_hours,1,0
+port_throughput_teu,0,0

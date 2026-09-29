@@ -1,0 +1,77 @@
+{
+    "model_name": "Master Super ML Multi-Model Maritime Ensemble",
+    "training_date": "2026-09-29 02:34:12 UTC",
+    "feature_count": 40,
+    "training_rows": 207,
+    "test_rows": 45,
+    "target": "target_next_week",
+    "forecast_horizon": "7 days / 1 week",
+    "dataset_version": "1.0",
+    "version": "4.0",
+    "R2": 0.9937286363527854,
+    "MAE": 52.98553534065941,
+    "RMSE": 59.47337668954624,
+    "MAPE": 0.3,
+    "feature_importances": [
+        {
+            "feature": "dwt",
+            "importance": 31.505
+        },
+        {
+            "feature": "distance_nm",
+            "importance": 29.474
+        },
+        {
+            "feature": "vessel_class_FEEDER",
+            "importance": 18.832
+        },
+        {
+            "feature": "speed_knots",
+            "importance": 7.189
+        },
+        {
+            "feature": "capacity_teu",
+            "importance": 5.336
+        },
+        {
+            "feature": "vessel_class_SUPRAMAX_BULK",
+            "importance": 4.439
+        },
+        {
+            "feature": "vessel_class_PANAMAX",
+            "importance": 0.923
+        },
+        {
+            "feature": "uses_suez",
+            "importance": 0.534
+        },
+        {
+            "feature": "origin_port_CNSHA",
+            "importance": 0.38
+        },
+        {
+            "feature": "destination_port_NLRTM",
+            "importance": 0.374
+        },
+        {
+            "feature": "vlsfo_price_usd",
+            "importance": 0.363
+        },
+        {
+            "feature": "origin_port_INBOM",
+            "importance": 0.246
+        },
+        {
+            "feature": "vessel_class_CAPESIZE_ULCV",
+            "importance": 0.158
+        },
+        {
+            "feature": "brent_crude_usd",
+            "importance": 0.153
+        },
+        {
+            "feature": "origin_port_SGSIN",
+            "importance": 0.036
+        }
+    ]
+}

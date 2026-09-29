@@ -1,0 +1,923 @@
+{
+  "info": {
+    "_postman_id": "2ffe1db7-9367-4ac5-95a9-7ab3897d84a7",
+    "name": "Container Tracking API",
+    "description": "Container Tracking allows to determine the current position of a given container on the World Map. To track the location of the container, just specify bill of lading, container, booking number.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "8328968"
+  },
+  "item": [
+    {
+      "name": "tracking",
+      "item": [
+        {
+          "name": "Tracking by any number",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}",
+                  "type": "string"
+                },
+                {
+                  "key": "in",
+                  "value": "query",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tracking?api_key=string&number=MRKU7181100&sealine=maeu&type=BL&force_update=false&route=false&ais=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tracking"
+              ],
+              "query": [
+                {
+                  "key": "api_key",
+                  "value": "string",
+                  "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                },
+                {
+                  "key": "number",
+                  "value": "MRKU7181100",
+                  "description": "Container number, Bill of Lading or Booking number. \n\nFor certain sealines, tracking is supported using a combined number in the format `Bill of Lading Number/Container Number` or `Booking Number/Container Number` (e.g., `BL12345678/ABCU1234567` or `BK12345678/ABCU1234567`)."
+                },
+                {
+                  "key": "sealine",
+                  "value": "maeu",
+                  "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info) \n\n If this parameter is empty or equal to auto or not represented at all in the query, we will try to determine the shipping line automatically."
+                },
+                {
+                  "key": "type",
+                  "value": "BL",
+                  "description": "Type of shipment number\n\n `CT` - Container number \n\n`BL` - Bill of lading number \n\n`BK` - Booking number \n\nIf this parameter will be empty or not presented at all in the query, we will try to determine the type of shipment number."
+                },
+                {
+                  "key": "force_update",
+                  "value": "false",
+                  "description": "Obtaining data directly from the shipping line or from a cache with minimal retention time. If this parameter is set to true, the execution time of the request may be longer!"
+                },
+                {
+                  "key": "route",
+                  "value": "false",
+                  "description": "If you need detailed route data, then set this parameter to true. If this parameter is set to true, the execution time of the request may be longer!"
+                },
+                {
+                  "key": "ais",
+                  "value": "false",
+                  "description": "If you need AIS data by vessel - set this parameter to true. This parameter is taken into account only when the \"route\" parameter in the query parameters is true. If this parameter is set to true, the execution time of the request may be longer!"
+                }
+              ]
+            },
+            "description": "Get tracking information by Container number, Bill of Lading or Booking number.\n\n"
+          },
+          "response": [
+            {
+              "name": "Untitled Example",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tracking?api_key=<API Key>&number=MRKU7181100&sealine=maeu&type=BL&force_update=false&route=false&ais=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tracking"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "<API Key>",
+                      "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                    },
+                    {
+                      "key": "number",
+                      "value": "MRKU7181100",
+                      "description": "Container number, Bill of Lading or Booking number. \n\nFor certain sealines, tracking is supported using a combined number in the format `Bill of Lading Number/Container Number` or `Booking Number/Container Number` (e.g., `BL12345678/ABCU1234567` or `BK12345678/ABCU1234567`)."
+                    },
+                    {
+                      "key": "sealine",
+                      "value": "maeu",
+                      "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info) \n\n If this parameter is empty or equal to auto or not represented at all in the query, we will try to determine the shipping line automatically."
+                    },
+                    {
+                      "key": "type",
+                      "value": "BL",
+                      "description": "Type of shipment number\n\n `CT` - Container number \n\n`BL` - Bill of lading number \n\n`BK` - Booking number \n\nIf this parameter will be empty or not presented at all in the query, we will try to determine the type of shipment number."
+                    },
+                    {
+                      "key": "force_update",
+                      "value": "false",
+                      "description": "Obtaining data directly from the shipping line or from a cache with minimal retention time. If this parameter is set to true, the execution time of the request may be longer!"
+                    },
+                    {
+                      "key": "route",
+                      "value": "false",
+                      "description": "If you need detailed route data, then set this parameter to true. If this parameter is set to true, the execution time of the request may be longer!"
+                    },
+                    {
+                      "key": "ais",
+                      "value": "false",
+                      "description": "If you need AIS data by vessel - set this parameter to true. This parameter is taken into account only when the \"route\" parameter in the query parameters is true. If this parameter is set to true, the execution time of the request may be longer!"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"OK\",\n  \"data\": {\n    \"metadata\": {\n      \"type\": \"BL\",\n      \"number\": \"HKA2573372\",\n      \"sealine\": \"CMDU\",\n      \"sealine_name\": \"CMA CGM\",\n      \"status\": \"IN_TRANSIT\",\n      \"is_status_from_sealine\": false,\n      \"from_cache\": true,\n      \"updated_at\": \"2025-10-31 09:00:25\",\n      \"cache_expires\": \"2025-11-01 09:00:25\",\n      \"api_calls\": {\n        \"total\": 100,\n        \"used\": 1,\n        \"remaining\": 99\n      },\n      \"unique_shipments\": {\n        \"total\": 100,\n        \"used\": 1,\n        \"remaining\": 99\n      }\n    },\n    \"locations\": [\n      {\n        \"id\": 1,\n        \"name\": \"San Antonio\",\n        \"state\": \"Region de Valparaiso\",\n        \"country\": \"Chile\",\n        \"country_code\": \"CL\",\n        \"locode\": \"CLSAI\",\n        \"lat\": -33.59473,\n        \"lng\": -71.60746,\n        \"timezone\": \"America/Santiago\"\n      },\n      {\n        \"id\": 2,\n        \"name\": \"Shanghai\",\n        \"state\": \"Shanghai Shi\",\n        \"country\": \"China\",\n        \"country_code\": \"CN\",\n        \"locode\": \"CNSHG\",\n        \"lat\": 31.366365,\n        \"lng\": 121.61475,\n        \"timezone\": \"Asia/Shanghai\"\n      },\n      {\n        \"id\": 3,\n        \"name\": \"Shekou\",\n        \"state\": \"Guangdong Sheng\",\n        \"country\": \"China\",\n        \"country_code\": \"CN\",\n        \"locode\": \"CNSHK\",\n        \"lat\": 22.49359,\n        \"lng\": 113.9156,\n        \"timezone\": \"Asia/Shanghai\"\n      }\n    ],\n    \"facilities\": [\n      {\n        \"id\": 1,\n        \"name\": \"Mawan Container Terminal\",\n        \"country_code\": \"CN\",\n        \"locode\": \"CNSHK\",\n        \"bic_code\": null,\n        \"smdg_code\": \"MWT\",\n        \"lat\": null,\n        \"lng\": null\n      },\n      {\n        \"id\": 2,\n        \"name\": \"YANGSHAN DEEP WATER PORT PHASE1 TER\",\n        \"country_code\": \"CN\",\n        \"locode\": \"CNSGH\",\n        \"bic_code\": null,\n        \"smdg_code\": null,\n        \"lat\": null,\n        \"lng\": null\n      },\n      {\n        \"id\": 3,\n        \"name\": \"PUERTO CENTRAL TERMINAL\",\n        \"country_code\": \"CL\",\n        \"locode\": \"CLSAI\",\n        \"bic_code\": null,\n        \"smdg_code\": null,\n        \"lat\": null,\n        \"lng\": null\n      }\n    ],\n    \"route\": {\n      \"prepol\": {\n        \"location\": 3,\n        \"date\": \"2025-09-13 01:01:00\",\n        \"actual\": true\n      },\n      \"pol\": {\n        \"location\": 3,\n        \"date\": \"2025-09-30 03:32:00\",\n        \"actual\": true\n      },\n      \"pod\": {\n        \"location\": 1,\n        \"date\": \"2025-10-31 23:00:00\",\n        \"actual\": false,\n        \"predictive_eta\": null\n      },\n      \"postpod\": {\n        \"location\": null,\n        \"date\": null,\n        \"actual\": null\n      }\n    },\n    \"vessels\": [\n      {\n        \"id\": 1,\n        \"name\": \"CMA CGM SAMSON\",\n        \"imo\": 9436379,\n        \"call_sign\": \"9HA2907\",\n        \"mmsi\": 256687000,\n        \"flag\": \"MT\"\n      },\n      {\n        \"id\": 2,\n        \"name\": \"CMA CGM MAUI\",\n        \"imo\": 9938157,\n        \"call_sign\": \"FMYR\",\n        \"mmsi\": 228459800,\n        \"flag\": \"FR\"\n      }\n    ],\n    \"containers\": [\n      {\n        \"number\": \"ECMU7336714\",\n        \"iso_code\": \"45G1\",\n        \"size_type\": \"40' High Cube Dry\",\n        \"status\": \"IN_TRANSIT\",\n        \"is_status_from_sealine\": false,\n        \"events_mirrored\": false,\n        \"events\": [\n          {\n            \"order_id\": 1,\n            \"location\": 3,\n            \"facility\": 1,\n            \"description\": \"Empty Picked-up at Depot\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"PICK\",\n            \"status\": \"CPS\",\n            \"date\": \"2025-09-13 01:29:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": \"TRUCK\",\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 2,\n            \"location\": 3,\n            \"facility\": 1,\n            \"description\": \"Gate in at Port terminal\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTIN\",\n            \"status\": \"CGI\",\n            \"date\": \"2025-09-14 06:14:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": \"TRUCK\",\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 3,\n            \"location\": 3,\n            \"facility\": 1,\n            \"description\": \"Loaded on board\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLL\",\n            \"date\": \"2025-09-28 23:48:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 2,\n            \"voyage\": \"1WU02E2MA\"\n          },\n          {\n            \"order_id\": 4,\n            \"location\": 3,\n            \"facility\": 1,\n            \"description\": \"Vessel Departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDL\",\n            \"date\": \"2025-09-30 03:32:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 2,\n            \"voyage\": \"1WU02E2MA\"\n          },\n          {\n            \"order_id\": 5,\n            \"location\": 2,\n            \"facility\": 2,\n            \"description\": \"Vessel Arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAT\",\n            \"date\": \"2025-10-06 00:32:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 2,\n            \"voyage\": \"1WU02E2MA\"\n          },\n          {\n            \"order_id\": 6,\n            \"location\": 2,\n            \"facility\": 2,\n            \"description\": \"Discharged in transhipment\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"DISC\",\n            \"status\": \"CDT\",\n            \"date\": \"2025-10-06 07:34:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 2,\n            \"voyage\": \"1WU02E2MA\"\n          },\n          {\n            \"order_id\": 7,\n            \"location\": 2,\n            \"facility\": 2,\n            \"description\": \"Loaded on board\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLT\",\n            \"date\": \"2025-10-07 23:52:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"1MH08E1MA\"\n          },\n          {\n            \"order_id\": 8,\n            \"location\": 2,\n            \"facility\": 2,\n            \"description\": \"Vessel Departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDT\",\n            \"date\": \"2025-10-08 04:30:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"1MH08E1MA\"\n          },\n          {\n            \"order_id\": 9,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Vessel Arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAD\",\n            \"date\": \"2025-10-31 23:00:00\",\n            \"actual\": false,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"1MH09W1MA\"\n          }\n        ]\n      },\n      {\n        \"number\": \"CMAU8661125\",\n        \"iso_code\": \"45G1\",\n        \"size_type\": \"40' High Cube Dry\",\n        \"status\": \"IN_TRANSIT\",\n        \"is_status_from_sealine\": false,\n        \"events_mirrored\": false,\n        \"events\": [\n          {\n            \"order_id\": 1,\n            \"location\": 3,\n            \"facility\": 1,\n            \"description\": \"Empty Picked-up at Depot\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"PICK\",\n            \"status\": \"CPS\",\n            \"date\": \"2025-09-13 01:01:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": \"TRUCK\",\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 2,\n            \"location\": 3,\n            \"facility\": 1,\n            \"description\": \"Gate in at Port terminal\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTIN\",\n            \"status\": \"CGI\",\n            \"date\": \"2025-09-14 07:53:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": \"TRUCK\",\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 3,\n            \"location\": 3,\n            \"facility\": 1,\n            \"description\": \"Loaded on board\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLL\",\n            \"date\": \"2025-09-29 01:21:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 2,\n            \"voyage\": \"1WU02E2MA\"\n          },\n          {\n            \"order_id\": 4,\n            \"location\": 3,\n            \"facility\": 1,\n            \"description\": \"Vessel Departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDL\",\n            \"date\": \"2025-09-30 03:32:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 2,\n            \"voyage\": \"1WU02E2MA\"\n          },\n          {\n            \"order_id\": 5,\n            \"location\": 2,\n            \"facility\": 2,\n            \"description\": \"Vessel Arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAT\",\n            \"date\": \"2025-10-06 00:32:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 2,\n            \"voyage\": \"1WU02E2MA\"\n          },\n          {\n            \"order_id\": 6,\n            \"location\": 2,\n            \"facility\": 2,\n            \"description\": \"Discharged in transhipment\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"DISC\",\n            \"status\": \"CDT\",\n            \"date\": \"2025-10-06 08:12:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 2,\n            \"voyage\": \"1WU02E2MA\"\n          },\n          {\n            \"order_id\": 7,\n            \"location\": 2,\n            \"facility\": 2,\n            \"description\": \"Loaded on board\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLT\",\n            \"date\": \"2025-10-08 00:25:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"1MH08E1MA\"\n          },\n          {\n            \"order_id\": 8,\n            \"location\": 2,\n            \"facility\": 2,\n            \"description\": \"Vessel Departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDT\",\n            \"date\": \"2025-10-08 04:30:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"1MH08E1MA\"\n          },\n          {\n            \"order_id\": 9,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Vessel Arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAD\",\n            \"date\": \"2025-10-31 23:00:00\",\n            \"actual\": false,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"1MH09W1MA\"\n          }\n        ]\n      }\n    ],\n    \"route_data\": {\n      \"route\": [\n        {\n          \"path\": [\n            [\n              22.4936,\n              113.9156\n            ],\n            [\n              21.7412,\n              114.2507\n            ],\n            [\n              21.7292,\n              114.2594\n            ],\n            [\n              21.7249,\n              114.271\n            ],\n            [\n              21.7282,\n              114.2856\n            ],\n            [\n              22.7414,\n              116.5605\n            ],\n            [\n              22.7478,\n              116.5752\n            ],\n            [\n              22.7538,\n              116.59\n            ],\n            [\n              22.7594,\n              116.605\n            ],\n            [\n              23.0111,\n              117.2917\n            ],\n            [\n              23.0164,\n              117.3044\n            ],\n            [\n              23.0228,\n              117.3166\n            ],\n            [\n              23.0303,\n              117.3281\n            ],\n            [\n              23.3945,\n              117.8416\n            ],\n            [\n              23.4027,\n              117.8528\n            ],\n            [\n              23.411,\n              117.8639\n            ],\n            [\n              23.4196,\n              117.8747\n            ],\n            [\n              24.799,\n              119.5881\n            ],\n            [\n              24.8087,\n              119.5997\n            ],\n            [\n              24.8188,\n              119.611\n            ],\n            [\n              24.8293,\n              119.622\n            ],\n            [\n              25.3135,\n              120.1132\n            ],\n            [\n              25.3245,\n              120.1236\n            ],\n            [\n              25.3361,\n              120.1332\n            ],\n            [\n              25.3484,\n              120.1421\n            ],\n            [\n              28.7869,\n              122.4699\n            ],\n            [\n              28.7994,\n              122.478\n            ],\n            [\n              28.8121,\n              122.4857\n            ],\n            [\n              28.8252,\n              122.4928\n            ],\n            [\n              30.0646,\n              123.1441\n            ],\n            [\n              30.0779,\n              123.1508\n            ],\n            [\n              30.0914,\n              123.157\n            ],\n            [\n              30.1052,\n              123.1627\n            ],\n            [\n              30.6337,\n              123.3708\n            ],\n            [\n              30.6518,\n              123.3757\n            ],\n            [\n              30.6702,\n              123.3763\n            ],\n            [\n              30.6886,\n              123.3725\n            ],\n            [\n              30.8578,\n              123.3191\n            ],\n            [\n              30.8752,\n              123.3115\n            ],\n            [\n              30.8903,\n              123.3007\n            ],\n            [\n              30.9031,\n              123.2868\n            ],\n            [\n              31.5163,\n              122.4726\n            ],\n            [\n              31.531,\n              122.4567\n            ],\n            [\n              31.548,\n              122.444\n            ],\n            [\n              31.5675,\n              122.4346\n            ],\n            [\n              31.6376,\n              122.4082\n            ],\n            [\n              31.6499,\n              122.4003\n            ],\n            [\n              31.6548,\n              122.3891\n            ],\n            [\n              31.6524,\n              122.3746\n            ],\n            [\n              31.3664,\n              121.6148\n            ]\n          ],\n          \"type\": \"SEA\",\n          \"transport_type\": \"VESSEL\",\n          \"from\": {\n            \"name\": \"Shekou\",\n            \"state\": \"Guangdong Sheng\",\n            \"country\": \"China\",\n            \"country_code\": \"CN\",\n            \"locode\": \"CNSHK\",\n            \"lat\": 22.49359,\n            \"lng\": 113.9156,\n            \"timezone\": \"Asia/Shanghai\"\n          },\n          \"to\": {\n            \"name\": \"Shanghai\",\n            \"state\": \"Shanghai Shi\",\n            \"country\": \"China\",\n            \"country_code\": \"CN\",\n            \"locode\": \"CNSHG\",\n            \"lat\": 31.366365,\n            \"lng\": 121.61475,\n            \"timezone\": \"Asia/Shanghai\"\n          },\n          \"vessel\": {\n            \"name\": \"CMA CGM MAUI\",\n            \"imo\": 9938157,\n            \"call_sign\": \"FMYR\",\n            \"mmsi\": 228459800,\n            \"flag\": \"FR\"\n          }\n        },\n        {\n          \"path\": [\n            [\n              31.3664,\n              121.6148\n            ],\n            [\n              31.6524,\n              122.3746\n            ],\n            [\n              31.6548,\n              122.3891\n            ],\n            [\n              31.6499,\n              122.4003\n            ],\n            [\n              31.6376,\n              122.4082\n            ],\n            [\n              31.5626,\n              122.4364\n            ],\n            [\n              31.5466,\n              122.4447\n            ],\n            [\n              31.5335,\n              122.4562\n            ],\n            [\n              31.5234,\n              122.471\n            ],\n            [\n              28.2173,\n              128.8401\n            ],\n            [\n              28.2081,\n              128.8563\n            ],\n            [\n              28.1979,\n              128.8717\n            ],\n            [\n              28.1865,\n              128.8864\n            ],\n            [\n              27.8566,\n              129.2807\n            ],\n            [\n              27.8424,\n              129.2996\n            ],\n            [\n              27.8304,\n              129.3198\n            ],\n            [\n              27.8206,\n              129.3413\n            ],\n            [\n              -31.2383,\n              -80.0207\n            ],\n            [\n              -32.43899523685321,\n              -76.01665022729425\n            ],\n            [\n              -33.6411,\n              -72.0079\n            ],\n            [\n              -33.6423,\n              -71.9933\n            ],\n            [\n              -33.6356,\n              -71.9845\n            ],\n            [\n              -33.621,\n              -71.9815\n            ],\n            [\n              -33.6159,\n              -71.9815\n            ],\n            [\n              -33.6032,\n              -71.9787\n            ],\n            [\n              -33.5956,\n              -71.9709\n            ],\n            [\n              -33.5931,\n              -71.958\n            ],\n            [\n              -33.5947,\n              -71.6075\n            ]\n          ],\n          \"type\": \"SEA\",\n          \"transport_type\": \"VESSEL\",\n          \"from\": {\n            \"name\": \"Shanghai\",\n            \"state\": \"Shanghai Shi\",\n            \"country\": \"China\",\n            \"country_code\": \"CN\",\n            \"locode\": \"CNSHG\",\n            \"lat\": 31.366365,\n            \"lng\": 121.61475,\n            \"timezone\": \"Asia/Shanghai\"\n          },\n          \"to\": {\n            \"name\": \"San Antonio\",\n            \"state\": \"Region de Valparaiso\",\n            \"country\": \"Chile\",\n            \"country_code\": \"CL\",\n            \"locode\": \"CLSAI\",\n            \"lat\": -33.59473,\n            \"lng\": -71.60746,\n            \"timezone\": \"America/Santiago\"\n          },\n          \"vessel\": {\n            \"name\": \"CMA CGM SAMSON\",\n            \"imo\": 9436379,\n            \"call_sign\": \"9HA2907\",\n            \"mmsi\": 256687000,\n            \"flag\": \"MT\"\n          }\n        }\n      ],\n      \"pin\": [\n        -32.43899523685321,\n        -76.01665022729425\n      ],\n      \"ais\": {\n        \"status\": \"OK\",\n        \"data\": {\n          \"last_event\": {\n            \"description\": \"Vessel Departure\",\n            \"date\": \"2025-10-08 04:30:00\",\n            \"voyage\": \"1MH08E1MA\"\n          },\n          \"discharge_port\": {\n            \"name\": \"San Antonio\",\n            \"country_code\": \"CL\",\n            \"code\": \"SAI\",\n            \"date\": \"2025-10-31 23:00:00\",\n            \"date_label\": \"ETA\"\n          },\n          \"vessel\": {\n            \"name\": \"CMA CGM SAMSON\",\n            \"imo\": 9436379,\n            \"call_sign\": \"9HA2907\",\n            \"mmsi\": 256687000,\n            \"flag\": \"MT\"\n          },\n          \"last_vessel_position\": {\n            \"lat\": -31.238251,\n            \"lng\": -80.020744,\n            \"updated_at\": \"2025-10-30 21:57:00\"\n          },\n          \"departure_port\": {\n            \"country_code\": \"CN\",\n            \"code\": \"SHG\",\n            \"date\": \"2025-10-07 21:18:00\",\n            \"date_label\": \"ATD\"\n          },\n          \"arrival_port\": {\n            \"country_code\": \"CL\",\n            \"code\": \"SAI\",\n            \"date\": \"2025-11-01 00:00:00\",\n            \"date_label\": \"ETA\"\n          },\n          \"updated_at\": \"2025-10-31 09:51:25\"\n        }\n      }\n    }\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "container",
+      "item": [
+        {
+          "name": "Tracking by container",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}",
+                  "type": "string"
+                },
+                {
+                  "key": "in",
+                  "value": "query",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/container?api_key=string&number=MRKU7181100&sealine=maeu&force_update=false&route=false&ais=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "container"
+              ],
+              "query": [
+                {
+                  "key": "api_key",
+                  "value": "string",
+                  "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                },
+                {
+                  "key": "number",
+                  "value": "MRKU7181100",
+                  "description": "Container number"
+                },
+                {
+                  "key": "sealine",
+                  "value": "maeu",
+                  "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info) \n\n If this parameter is empty or equal to auto or not represented at all in the query, we will try to determine the shipping line automatically."
+                },
+                {
+                  "key": "force_update",
+                  "value": "false",
+                  "description": "Obtaining data directly from the shipping line or from a cache with minimal retention time. If this parameter is set to true, the execution time of the request may be longer!"
+                },
+                {
+                  "key": "route",
+                  "value": "false",
+                  "description": "If you need detailed route data, then set this parameter to true. If this parameter is set to true, the execution time of the request may be longer!"
+                },
+                {
+                  "key": "ais",
+                  "value": "false",
+                  "description": "If you need AIS data by vessel - set this parameter to true. This parameter is taken into account only when the \"route\" parameter in the query parameters is true. If this parameter is set to true, the execution time of the request may be longer!"
+                }
+              ]
+            },
+            "description": "Get tracking information by container number. *This operation has been marked as deprecated. Use [GET /tracking](https://docs.searates.com/reference/tracking/tracking-by-any-number)*"
+          },
+          "response": [
+            {
+              "name": "Untitled Example",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/container?api_key=<API Key>&number=MRKU7181100&sealine=maeu&force_update=false&route=false&ais=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "container"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "<API Key>",
+                      "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                    },
+                    {
+                      "key": "number",
+                      "value": "MRKU7181100",
+                      "description": "Container number"
+                    },
+                    {
+                      "key": "sealine",
+                      "value": "maeu",
+                      "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info) \n\n If this parameter is empty or equal to auto or not represented at all in the query, we will try to determine the shipping line automatically."
+                    },
+                    {
+                      "key": "force_update",
+                      "value": "false",
+                      "description": "Obtaining data directly from the shipping line or from a cache with minimal retention time. If this parameter is set to true, the execution time of the request may be longer!"
+                    },
+                    {
+                      "key": "route",
+                      "value": "false",
+                      "description": "If you need detailed route data, then set this parameter to true. If this parameter is set to true, the execution time of the request may be longer!"
+                    },
+                    {
+                      "key": "ais",
+                      "value": "false",
+                      "description": "If you need AIS data by vessel - set this parameter to true. This parameter is taken into account only when the \"route\" parameter in the query parameters is true. If this parameter is set to true, the execution time of the request may be longer!"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"OK\",\n  \"data\": {\n    \"metadata\": {\n      \"type\": \"CT\",\n      \"number\": \"MRKU9465770\",\n      \"sealine\": \"MAEU\",\n      \"sealine_name\": \"Maersk\",\n      \"status\": \"IN_TRANSIT\",\n      \"is_status_from_sealine\": true,\n      \"from_cache\": false,\n      \"updated_at\": \"2025-03-14 07:54:50\",\n      \"cache_expires\": \"2025-03-14 19:54:50\",\n      \"api_calls\": {\n        \"total\": 100,\n        \"used\": 1,\n        \"remaining\": 99\n      },\n      \"unique_shipments\": {\n        \"total\": 0,\n        \"used\": 0,\n        \"remaining\": 0\n      }\n    },\n    \"locations\": [\n      {\n        \"id\": 1,\n        \"name\": \"Qingdao\",\n        \"state\": \"Shandong Sheng\",\n        \"country\": \"China\",\n        \"country_code\": \"CN\",\n        \"locode\": \"CNQDG\",\n        \"lat\": 36.06488,\n        \"lng\": 120.38042,\n        \"timezone\": \"Asia/Shanghai\"\n      },\n      {\n        \"id\": 2,\n        \"name\": \"Oakland\",\n        \"state\": \"California\",\n        \"country\": \"United States\",\n        \"country_code\": \"US\",\n        \"locode\": \"USOAK\",\n        \"lat\": 37.80437,\n        \"lng\": -122.2708,\n        \"timezone\": \"America/Los_Angeles\"\n      }\n    ],\n    \"facilities\": [\n      {\n        \"id\": 1,\n        \"name\": \"Smart International Logistics Co\",\n        \"country_code\": \"CN\",\n        \"locode\": null,\n        \"bic_code\": null,\n        \"smdg_code\": null,\n        \"lat\": null,\n        \"lng\": null\n      },\n      {\n        \"id\": 2,\n        \"name\": \"Qingdao Qianwan Container Co Ltd\",\n        \"country_code\": \"CN\",\n        \"locode\": null,\n        \"bic_code\": null,\n        \"smdg_code\": null,\n        \"lat\": null,\n        \"lng\": null\n      },\n      {\n        \"id\": 3,\n        \"name\": \"OAK INTL CONT TERM BERTH 58 Z985\",\n        \"country_code\": \"US\",\n        \"locode\": null,\n        \"bic_code\": null,\n        \"smdg_code\": null,\n        \"lat\": null,\n        \"lng\": null\n      }\n    ],\n    \"route\": {\n      \"prepol\": {\n        \"location\": 1,\n        \"date\": \"2025-03-03 23:05:00\",\n        \"actual\": true\n      },\n      \"pol\": {\n        \"location\": 1,\n        \"date\": \"2025-03-12 21:14:00\",\n        \"actual\": true\n      },\n      \"pod\": {\n        \"location\": 2,\n        \"date\": \"2025-04-12 08:00:00\",\n        \"actual\": false,\n        \"predictive_eta\": null\n      },\n      \"postpod\": {\n        \"location\": 2,\n        \"date\": \"2025-04-12 08:00:00\",\n        \"actual\": false\n      }\n    },\n    \"vessels\": [\n      {\n        \"id\": 1,\n        \"name\": \"MAERSK SHIVLING\",\n        \"imo\": 9728253,\n        \"call_sign\": \"D5JH8\",\n        \"mmsi\": 636017104,\n        \"flag\": \"LR\"\n      }\n    ],\n    \"container\": {\n      \"number\": \"MRKU9465770\",\n      \"iso_code\": \"22G1\",\n      \"size_type\": \"20' Dry Standard\",\n      \"status\": \"IN_TRANSIT\",\n      \"is_status_from_sealine\": true,\n      \"events_mirrored\": false,\n      \"events\": [\n        {\n          \"order_id\": 1,\n          \"location\": 1,\n          \"facility\": 1,\n          \"description\": \"Gate out Empty\",\n          \"event_type\": \"EQUIPMENT\",\n          \"event_code\": \"GTOT\",\n          \"status\": \"CEP\",\n          \"date\": \"2025-03-03 23:05:00\",\n          \"actual\": true,\n          \"is_date_from_sealine\": true,\n          \"is_additional_event\": false,\n          \"type\": \"land\",\n          \"transport_type\": null,\n          \"vessel\": null,\n          \"voyage\": null\n        },\n        {\n          \"order_id\": 2,\n          \"location\": 1,\n          \"facility\": 2,\n          \"description\": \"Gate in\",\n          \"event_type\": \"EQUIPMENT\",\n          \"event_code\": \"GTIN\",\n          \"status\": \"CGI\",\n          \"date\": \"2025-03-09 17:58:00\",\n          \"actual\": true,\n          \"is_date_from_sealine\": true,\n          \"is_additional_event\": false,\n          \"type\": \"land\",\n          \"transport_type\": null,\n          \"vessel\": null,\n          \"voyage\": null\n        },\n        {\n          \"order_id\": 3,\n          \"location\": 1,\n          \"facility\": 2,\n          \"description\": \"Load\",\n          \"event_type\": \"EQUIPMENT\",\n          \"event_code\": \"LOAD\",\n          \"status\": \"CLL\",\n          \"date\": \"2025-03-12 14:32:00\",\n          \"actual\": true,\n          \"is_date_from_sealine\": true,\n          \"is_additional_event\": false,\n          \"type\": \"sea\",\n          \"transport_type\": \"VESSEL\",\n          \"vessel\": 1,\n          \"voyage\": \"510E\"\n        },\n        {\n          \"order_id\": 4,\n          \"location\": 1,\n          \"facility\": 2,\n          \"description\": \"Vessel departure\",\n          \"event_type\": \"TRANSPORT\",\n          \"event_code\": \"DEPA\",\n          \"status\": \"VDL\",\n          \"date\": \"2025-03-12 21:14:00\",\n          \"actual\": true,\n          \"is_date_from_sealine\": true,\n          \"is_additional_event\": false,\n          \"type\": \"sea\",\n          \"transport_type\": \"VESSEL\",\n          \"vessel\": 1,\n          \"voyage\": \"510E\"\n        },\n        {\n          \"order_id\": 5,\n          \"location\": 2,\n          \"facility\": 3,\n          \"description\": \"Vessel arrival\",\n          \"event_type\": \"TRANSPORT\",\n          \"event_code\": \"ARRI\",\n          \"status\": \"VAD\",\n          \"date\": \"2025-04-12 08:00:00\",\n          \"actual\": false,\n          \"is_date_from_sealine\": true,\n          \"is_additional_event\": false,\n          \"type\": \"sea\",\n          \"transport_type\": \"VESSEL\",\n          \"vessel\": 1,\n          \"voyage\": \"510E\"\n        }\n      ]\n    }\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "reference",
+      "item": [
+        {
+          "name": "Tracking by B/L",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}",
+                  "type": "string"
+                },
+                {
+                  "key": "in",
+                  "value": "query",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reference?api_key=string&number=HLCUXM1230445340&type=BL&sealine=maeu&force_update=false&route=false&ais=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reference"
+              ],
+              "query": [
+                {
+                  "key": "api_key",
+                  "value": "string",
+                  "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                },
+                {
+                  "key": "number",
+                  "value": "HLCUXM1230445340",
+                  "description": "Bill of lading or booking number"
+                },
+                {
+                  "key": "type",
+                  "value": "BL",
+                  "description": "Type of shipment number\n\n `CT` - Container number \n\n`BL` - Bill of lading number \n\n`BK` - Booking number \n\nIf this parameter will be empty or not presented at all in the query, we will try to determine the type of shipment number."
+                },
+                {
+                  "key": "sealine",
+                  "value": "maeu",
+                  "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info) \n\n If this parameter is empty or equal to auto or not represented at all in the query, we will try to determine the shipping line automatically."
+                },
+                {
+                  "key": "force_update",
+                  "value": "false",
+                  "description": "Obtaining data directly from the shipping line or from a cache with minimal retention time. If this parameter is set to true, the execution time of the request may be longer!"
+                },
+                {
+                  "key": "route",
+                  "value": "false",
+                  "description": "If you need detailed route data, then set this parameter to true. If this parameter is set to true, the execution time of the request may be longer!"
+                },
+                {
+                  "key": "ais",
+                  "value": "false",
+                  "description": "If you need AIS data by vessel - set this parameter to true. This parameter is taken into account only when the \"route\" parameter in the query parameters is true. If this parameter is set to true, the execution time of the request may be longer!"
+                }
+              ]
+            },
+            "description": "Get tracking information by Bill of Lading or Booking number. *This operation has been marked as deprecated. Use [GET /tracking](https://docs.searates.com/reference/tracking/tracking-by-any-number)*"
+          },
+          "response": [
+            {
+              "name": "Untitled Example",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/reference?api_key=<API Key>&number=HLCUXM1230445340&type=BL&sealine=maeu&force_update=false&route=false&ais=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reference"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "<API Key>",
+                      "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                    },
+                    {
+                      "key": "number",
+                      "value": "HLCUXM1230445340",
+                      "description": "Bill of lading or booking number"
+                    },
+                    {
+                      "key": "type",
+                      "value": "BL",
+                      "description": "Type of shipment number\n\n `CT` - Container number \n\n`BL` - Bill of lading number \n\n`BK` - Booking number \n\nIf this parameter will be empty or not presented at all in the query, we will try to determine the type of shipment number."
+                    },
+                    {
+                      "key": "sealine",
+                      "value": "maeu",
+                      "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info) \n\n If this parameter is empty or equal to auto or not represented at all in the query, we will try to determine the shipping line automatically."
+                    },
+                    {
+                      "key": "force_update",
+                      "value": "false",
+                      "description": "Obtaining data directly from the shipping line or from a cache with minimal retention time. If this parameter is set to true, the execution time of the request may be longer!"
+                    },
+                    {
+                      "key": "route",
+                      "value": "false",
+                      "description": "If you need detailed route data, then set this parameter to true. If this parameter is set to true, the execution time of the request may be longer!"
+                    },
+                    {
+                      "key": "ais",
+                      "value": "false",
+                      "description": "If you need AIS data by vessel - set this parameter to true. This parameter is taken into account only when the \"route\" parameter in the query parameters is true. If this parameter is set to true, the execution time of the request may be longer!"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"OK\",\n  \"data\": {\n    \"metadata\": {\n      \"type\": \"BL\",\n      \"number\": \"250256386\",\n      \"sealine\": \"MAEU\",\n      \"sealine_name\": \"Maersk\",\n      \"status\": \"IN_TRANSIT\",\n      \"is_status_from_sealine\": true,\n      \"from_cache\": true,\n      \"updated_at\": \"2025-03-14 07:37:04\",\n      \"cache_expires\": \"2025-03-14 19:37:04\",\n      \"api_calls\": {\n        \"total\": 100,\n        \"used\": 1,\n        \"remaining\": 99\n      },\n      \"unique_shipments\": {\n        \"total\": 0,\n        \"used\": 0,\n        \"remaining\": 0\n      }\n    },\n    \"locations\": [\n      {\n        \"id\": 1,\n        \"name\": \"Qingdao\",\n        \"state\": \"Shandong Sheng\",\n        \"country\": \"China\",\n        \"country_code\": \"CN\",\n        \"locode\": \"CNQDG\",\n        \"lat\": 36.06488,\n        \"lng\": 120.38042,\n        \"timezone\": \"Asia/Shanghai\"\n      },\n      {\n        \"id\": 2,\n        \"name\": \"Oakland\",\n        \"state\": \"California\",\n        \"country\": \"United States\",\n        \"country_code\": \"US\",\n        \"locode\": \"USOAK\",\n        \"lat\": 37.80437,\n        \"lng\": -122.2708,\n        \"timezone\": \"America/Los_Angeles\"\n      }\n    ],\n    \"facilities\": [\n      {\n        \"id\": 1,\n        \"name\": \"OAK INTL CONT TERM BERTH 58 Z985\",\n        \"country_code\": \"US\",\n        \"locode\": null,\n        \"bic_code\": null,\n        \"smdg_code\": null,\n        \"lat\": null,\n        \"lng\": null\n      },\n      {\n        \"id\": 2,\n        \"name\": \"Smart International Logistics Co\",\n        \"country_code\": \"CN\",\n        \"locode\": null,\n        \"bic_code\": null,\n        \"smdg_code\": null,\n        \"lat\": null,\n        \"lng\": null\n      },\n      {\n        \"id\": 3,\n        \"name\": \"Qingdao Qianwan Container Co Ltd\",\n        \"country_code\": \"CN\",\n        \"locode\": null,\n        \"bic_code\": null,\n        \"smdg_code\": null,\n        \"lat\": null,\n        \"lng\": null\n      }\n    ],\n    \"route\": {\n      \"prepol\": {\n        \"location\": 1,\n        \"date\": \"2025-03-03 23:05:00\",\n        \"actual\": true\n      },\n      \"pol\": {\n        \"location\": 1,\n        \"date\": \"2025-03-12 21:14:00\",\n        \"actual\": true\n      },\n      \"pod\": {\n        \"location\": 2,\n        \"date\": \"2025-04-12 08:00:00\",\n        \"actual\": false,\n        \"predictive_eta\": null\n      },\n      \"postpod\": {\n        \"location\": 2,\n        \"date\": \"2025-04-12 08:00:00\",\n        \"actual\": false\n      }\n    },\n    \"vessels\": [\n      {\n        \"id\": 1,\n        \"name\": \"MAERSK SHIVLING\",\n        \"imo\": 9728253,\n        \"call_sign\": \"D5JH8\",\n        \"mmsi\": 636017104,\n        \"flag\": \"LR\"\n      }\n    ],\n    \"containers\": [\n      {\n        \"number\": \"MRKU9465770\",\n        \"iso_code\": \"22G1\",\n        \"size_type\": \"20' Dry Standard\",\n        \"status\": \"IN_TRANSIT\",\n        \"is_status_from_sealine\": true,\n        \"events_mirrored\": false,\n        \"events\": [\n          {\n            \"order_id\": 1,\n            \"location\": 1,\n            \"facility\": 2,\n            \"description\": \"Gate out Empty\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTOT\",\n            \"status\": \"CEP\",\n            \"date\": \"2025-03-03 23:05:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 2,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Gate in\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTIN\",\n            \"status\": \"CGI\",\n            \"date\": \"2025-03-09 17:58:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 3,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Load\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLL\",\n            \"date\": \"2025-03-12 14:32:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 4,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Vessel departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDL\",\n            \"date\": \"2025-03-12 21:14:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 5,\n            \"location\": 2,\n            \"facility\": 1,\n            \"description\": \"Vessel arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAD\",\n            \"date\": \"2025-04-12 08:00:00\",\n            \"actual\": false,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          }\n        ]\n      },\n      {\n        \"number\": \"PONU0050964\",\n        \"iso_code\": \"22G1\",\n        \"size_type\": \"20' Dry Standard\",\n        \"status\": \"IN_TRANSIT\",\n        \"is_status_from_sealine\": true,\n        \"events_mirrored\": false,\n        \"events\": [\n          {\n            \"order_id\": 1,\n            \"location\": 1,\n            \"facility\": 2,\n            \"description\": \"Gate out Empty\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTOT\",\n            \"status\": \"CEP\",\n            \"date\": \"2025-03-03 23:04:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 2,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Gate in\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTIN\",\n            \"status\": \"CGI\",\n            \"date\": \"2025-03-09 17:58:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 3,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Load\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLL\",\n            \"date\": \"2025-03-12 14:32:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 4,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Vessel departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDL\",\n            \"date\": \"2025-03-12 21:14:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 5,\n            \"location\": 2,\n            \"facility\": 1,\n            \"description\": \"Vessel arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAD\",\n            \"date\": \"2025-04-12 08:00:00\",\n            \"actual\": false,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          }\n        ]\n      },\n      {\n        \"number\": \"WNGU2504907\",\n        \"iso_code\": \"22G1\",\n        \"size_type\": \"20' Dry Standard\",\n        \"status\": \"IN_TRANSIT\",\n        \"is_status_from_sealine\": true,\n        \"events_mirrored\": false,\n        \"events\": [\n          {\n            \"order_id\": 1,\n            \"location\": 1,\n            \"facility\": 2,\n            \"description\": \"Gate out Empty\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTOT\",\n            \"status\": \"CEP\",\n            \"date\": \"2025-03-04 22:04:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 2,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Gate in\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTIN\",\n            \"status\": \"CGI\",\n            \"date\": \"2025-03-09 16:39:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 3,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Load\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLL\",\n            \"date\": \"2025-03-12 14:51:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 4,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Vessel departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDL\",\n            \"date\": \"2025-03-12 21:14:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 5,\n            \"location\": 2,\n            \"facility\": 1,\n            \"description\": \"Vessel arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAD\",\n            \"date\": \"2025-04-12 08:00:00\",\n            \"actual\": false,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          }\n        ]\n      },\n      {\n        \"number\": \"WNGU2505842\",\n        \"iso_code\": \"22G1\",\n        \"size_type\": \"20' Dry Standard\",\n        \"status\": \"IN_TRANSIT\",\n        \"is_status_from_sealine\": true,\n        \"events_mirrored\": false,\n        \"events\": [\n          {\n            \"order_id\": 1,\n            \"location\": 1,\n            \"facility\": 2,\n            \"description\": \"Gate out Empty\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTOT\",\n            \"status\": \"CEP\",\n            \"date\": \"2025-03-05 03:55:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 2,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Gate in\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTIN\",\n            \"status\": \"CGI\",\n            \"date\": \"2025-03-09 20:51:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 3,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Load\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLL\",\n            \"date\": \"2025-03-12 14:28:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 4,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Vessel departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDL\",\n            \"date\": \"2025-03-12 21:14:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 5,\n            \"location\": 2,\n            \"facility\": 1,\n            \"description\": \"Vessel arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAD\",\n            \"date\": \"2025-04-12 08:00:00\",\n            \"actual\": false,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          }\n        ]\n      },\n      {\n        \"number\": \"WNGU2505884\",\n        \"iso_code\": \"22G1\",\n        \"size_type\": \"20' Dry Standard\",\n        \"status\": \"IN_TRANSIT\",\n        \"is_status_from_sealine\": true,\n        \"events_mirrored\": false,\n        \"events\": [\n          {\n            \"order_id\": 1,\n            \"location\": 1,\n            \"facility\": 2,\n            \"description\": \"Gate out Empty\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTOT\",\n            \"status\": \"CEP\",\n            \"date\": \"2025-03-04 22:04:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 2,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Gate in\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTIN\",\n            \"status\": \"CGI\",\n            \"date\": \"2025-03-09 16:39:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 3,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Load\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLL\",\n            \"date\": \"2025-03-12 14:51:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 4,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Vessel departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDL\",\n            \"date\": \"2025-03-12 21:14:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 5,\n            \"location\": 2,\n            \"facility\": 1,\n            \"description\": \"Vessel arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAD\",\n            \"date\": \"2025-04-12 08:00:00\",\n            \"actual\": false,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          }\n        ]\n      },\n      {\n        \"number\": \"WNGU2506176\",\n        \"iso_code\": \"22G1\",\n        \"size_type\": \"20' Dry Standard\",\n        \"status\": \"IN_TRANSIT\",\n        \"is_status_from_sealine\": true,\n        \"events_mirrored\": false,\n        \"events\": [\n          {\n            \"order_id\": 1,\n            \"location\": 1,\n            \"facility\": 2,\n            \"description\": \"Gate out Empty\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTOT\",\n            \"status\": \"CEP\",\n            \"date\": \"2025-03-05 03:35:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 2,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Gate in\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTIN\",\n            \"status\": \"CGI\",\n            \"date\": \"2025-03-09 16:27:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 3,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Load\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLL\",\n            \"date\": \"2025-03-12 14:54:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 4,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Vessel departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDL\",\n            \"date\": \"2025-03-12 21:14:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 5,\n            \"location\": 2,\n            \"facility\": 1,\n            \"description\": \"Vessel arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAD\",\n            \"date\": \"2025-04-12 08:00:00\",\n            \"actual\": false,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          }\n        ]\n      },\n      {\n        \"number\": \"WNGU2507090\",\n        \"iso_code\": \"22G1\",\n        \"size_type\": \"20' Dry Standard\",\n        \"status\": \"IN_TRANSIT\",\n        \"is_status_from_sealine\": true,\n        \"events_mirrored\": false,\n        \"events\": [\n          {\n            \"order_id\": 1,\n            \"location\": 1,\n            \"facility\": 2,\n            \"description\": \"Gate out Empty\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTOT\",\n            \"status\": \"CEP\",\n            \"date\": \"2025-03-05 03:55:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 2,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Gate in\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTIN\",\n            \"status\": \"CGI\",\n            \"date\": \"2025-03-09 20:48:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 3,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Load\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLL\",\n            \"date\": \"2025-03-12 14:42:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 4,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Vessel departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDL\",\n            \"date\": \"2025-03-12 21:14:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 5,\n            \"location\": 2,\n            \"facility\": 1,\n            \"description\": \"Vessel arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAD\",\n            \"date\": \"2025-04-12 08:00:00\",\n            \"actual\": false,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          }\n        ]\n      },\n      {\n        \"number\": \"WNGU2507233\",\n        \"iso_code\": \"22G1\",\n        \"size_type\": \"20' Dry Standard\",\n        \"status\": \"IN_TRANSIT\",\n        \"is_status_from_sealine\": true,\n        \"events_mirrored\": false,\n        \"events\": [\n          {\n            \"order_id\": 1,\n            \"location\": 1,\n            \"facility\": 2,\n            \"description\": \"Gate out Empty\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTOT\",\n            \"status\": \"CEP\",\n            \"date\": \"2025-03-05 03:35:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 2,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Gate in\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"GTIN\",\n            \"status\": \"CGI\",\n            \"date\": \"2025-03-09 16:29:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"land\",\n            \"transport_type\": null,\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"order_id\": 3,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Load\",\n            \"event_type\": \"EQUIPMENT\",\n            \"event_code\": \"LOAD\",\n            \"status\": \"CLL\",\n            \"date\": \"2025-03-12 14:45:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 4,\n            \"location\": 1,\n            \"facility\": 3,\n            \"description\": \"Vessel departure\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"DEPA\",\n            \"status\": \"VDL\",\n            \"date\": \"2025-03-12 21:14:00\",\n            \"actual\": true,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          },\n          {\n            \"order_id\": 5,\n            \"location\": 2,\n            \"facility\": 1,\n            \"description\": \"Vessel arrival\",\n            \"event_type\": \"TRANSPORT\",\n            \"event_code\": \"ARRI\",\n            \"status\": \"VAD\",\n            \"date\": \"2025-04-12 08:00:00\",\n            \"actual\": false,\n            \"is_date_from_sealine\": true,\n            \"is_additional_event\": false,\n            \"type\": \"sea\",\n            \"transport_type\": \"VESSEL\",\n            \"vessel\": 1,\n            \"voyage\": \"510E\"\n          }\n        ]\n      }\n    ],\n    \"route_data\": {\n      \"route\": [\n        {\n          \"path\": [\n            [\n              36.0649,\n              120.3804\n            ],\n            [\n              35.5708,\n              120.8286\n            ],\n            [\n              35.5612,\n              120.8388\n            ],\n            [\n              35.5533,\n              120.8501\n            ],\n            [\n              35.5472,\n              120.8627\n            ],\n            [\n              33.8623,\n              125.0356\n            ],\n            [\n              33.8562,\n              125.0528\n            ],\n            [\n              33.8514,\n              125.0703\n            ],\n            [\n              33.848,\n              125.0882\n            ],\n            [\n              33.7223,\n              125.9125\n            ],\n            [\n              33.7231,\n              125.9275\n            ],\n            [\n              33.7307,\n              125.9376\n            ],\n            [\n              33.745,\n              125.9427\n            ],\n            [\n              33.7717,\n              125.9468\n            ],\n            [\n              33.745,\n              125.9427\n            ],\n            [\n              33.7298,\n              125.9434\n            ],\n            [\n              33.7196,\n              125.9508\n            ],\n            [\n              33.7143,\n              125.9649\n            ],\n            [\n              33.7018,\n              126.0464\n            ],\n            [\n              33.6994,\n              126.053\n            ],\n            [\n              33.6948,\n              126.0561\n            ],\n            [\n              33.6878,\n              126.0556\n            ],\n            [\n              33.6999,\n              126.0591\n            ],\n            [\n              33.6932,\n              126.0585\n            ],\n            [\n              33.6894,\n              126.0615\n            ],\n            [\n              33.6885,\n              126.0681\n            ],\n            [\n              33.7481,\n              126.9036\n            ],\n            [\n              33.7494,\n              126.9217\n            ],\n            [\n              33.7507,\n              126.9398\n            ],\n            [\n              33.752,\n              126.9578\n            ],\n            [\n              33.91265092179989,\n              129.18822808575646\n            ],\n            [\n              34.0022,\n              130.4315\n            ],\n            [\n              34.003,\n              130.4497\n            ],\n            [\n              34.0028,\n              130.4679\n            ],\n            [\n              34.0015,\n              130.486\n            ],\n            [\n              33.9839,\n              130.6611\n            ],\n            [\n              33.9817,\n              130.6801\n            ],\n            [\n              33.9786,\n              130.699\n            ],\n            [\n              33.9749,\n              130.7177\n            ],\n            [\n              33.9617,\n              130.7775\n            ],\n            [\n              33.9569,\n              130.7961\n            ],\n            [\n              33.9507,\n              130.8142\n            ],\n            [\n              33.9431,\n              130.8318\n            ],\n            [\n              33.9416,\n              130.8349\n            ],\n            [\n              33.9341,\n              130.8506\n            ],\n            [\n              33.9266,\n              130.8663\n            ],\n            [\n              33.919,\n              130.882\n            ],\n            [\n              33.9153,\n              130.8897\n            ],\n            [\n              33.9115,\n              130.9007\n            ],\n            [\n              33.9105,\n              130.9119\n            ],\n            [\n              33.9124,\n              130.9234\n            ],\n            [\n              33.9074,\n              130.9062\n            ],\n            [\n              33.9117,\n              130.9172\n            ],\n            [\n              33.9179,\n              130.9269\n            ],\n            [\n              33.926,\n              130.9355\n            ],\n            [\n              33.9269,\n              130.9362\n            ],\n            [\n              33.9367,\n              130.9454\n            ],\n            [\n              33.9456,\n              130.9553\n            ],\n            [\n              33.9538,\n              130.966\n            ],\n            [\n              33.954,\n              130.9664\n            ],\n            [\n              33.961,\n              130.9778\n            ],\n            [\n              33.9666,\n              130.9898\n            ],\n            [\n              33.9708,\n              131.0025\n            ],\n            [\n              33.9656,\n              130.9831\n            ],\n            [\n              33.9694,\n              131.0049\n            ],\n            [\n              33.969,\n              131.0266\n            ],\n            [\n              33.9645,\n              131.0483\n            ],\n            [\n              33.94,\n              131.1264\n            ],\n            [\n              33.934,\n              131.146\n            ],\n            [\n              33.9283,\n              131.1657\n            ],\n            [\n              33.9229,\n              131.1854\n            ],\n            [\n              33.6807,\n              132.0855\n            ],\n            [\n              33.6766,\n              132.1054\n            ],\n            [\n              33.6749,\n              132.1255\n            ],\n            [\n              33.6757,\n              132.1457\n            ],\n            [\n              33.721,\n              132.5874\n            ],\n            [\n              33.7235,\n              132.6081\n            ],\n            [\n              33.7267,\n              132.6287\n            ],\n            [\n              33.7306,\n              132.6492\n            ],\n            [\n              34.1492,\n              134.6545\n            ],\n            [\n              34.1498,\n              134.6699\n            ],\n            [\n              34.1444,\n              134.6828\n            ],\n            [\n              34.1332,\n              134.6933\n            ],\n            [\n              33.4787,\n              135.1134\n            ],\n            [\n              33.4681,\n              135.122\n            ],\n            [\n              33.4598,\n              135.1324\n            ],\n            [\n              33.4538,\n              135.1447\n            ],\n            [\n              33.2405,\n              135.7489\n            ],\n            [\n              33.2367,\n              135.7623\n            ],\n            [\n              33.2347,\n              135.7759\n            ],\n            [\n              33.2343,\n              135.7899\n            ],\n            [\n              37.4964,\n              -123.081\n            ],\n            [\n              37.4979,\n              -123.0649\n            ],\n            [\n              37.5011,\n              -123.0491\n            ],\n            [\n              37.506,\n              -123.0336\n            ],\n            [\n              37.591,\n              -122.8085\n            ],\n            [\n              37.599,\n              -122.7875\n            ],\n            [\n              37.6071,\n              -122.7666\n            ],\n            [\n              37.6154,\n              -122.7457\n            ],\n            [\n              37.8044,\n              -122.2708\n            ]\n          ],\n          \"type\": \"SEA\",\n          \"transport_type\": \"VESSEL\"\n        }\n      ],\n      \"pin\": [\n        33.91265092179989,\n        129.18822808575646\n      ],\n      \"ais\": {\n        \"status\": \"OK\",\n        \"data\": {\n          \"last_event\": {\n            \"description\": \"Vessel departure\",\n            \"date\": \"2025-03-12 21:14:00\",\n            \"voyage\": \"510E\"\n          },\n          \"discharge_port\": {\n            \"name\": \"Oakland\",\n            \"country_code\": \"US\",\n            \"code\": \"OAK\",\n            \"date\": \"2025-04-12 08:00:00\",\n            \"date_label\": \"ETA\"\n          },\n          \"vessel\": {\n            \"name\": \"MAERSK SHIVLING\",\n            \"imo\": 9728253,\n            \"call_sign\": \"D5JH8\",\n            \"mmsi\": 636017104,\n            \"flag\": \"LR\"\n          },\n          \"last_vessel_position\": {\n            \"lat\": 35.077282,\n            \"lng\": 128.80836,\n            \"updated_at\": \"2025-03-14 07:47:25\"\n          },\n          \"departure_port\": {\n            \"country_code\": \"CN\",\n            \"code\": \"QDG\",\n            \"date\": \"2025-03-12 13:59:00\",\n            \"date_label\": \"ATD\"\n          },\n          \"arrival_port\": {\n            \"country_code\": \"KR\",\n            \"code\": \"PUS\",\n            \"date\": \"2025-03-14 06:00:00\",\n            \"date_label\": \"ETA\"\n          },\n          \"updated_at\": \"2025-03-14 07:52:20\"\n        }\n      }\n    }\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "route",
+      "item": [
+        {
+          "name": "Route information",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}",
+                  "type": "string"
+                },
+                {
+                  "key": "in",
+                  "value": "query",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/route?api_key=string&number=MRKU7181100&type=BL&sealine=maeu",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "route"
+              ],
+              "query": [
+                {
+                  "key": "api_key",
+                  "value": "string",
+                  "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                },
+                {
+                  "key": "number",
+                  "value": "MRKU7181100",
+                  "description": "Container number, Bill of Lading or Booking number. \n\nFor certain sealines, tracking is supported using a combined number in the format `Bill of Lading Number/Container Number` or `Booking Number/Container Number` (e.g., `BL12345678/ABCU1234567` or `BK12345678/ABCU1234567`)."
+                },
+                {
+                  "key": "type",
+                  "value": "BL",
+                  "description": "Type of shipment number\n\n `CT` - Container number \n\n`BL` - Bill of lading number \n\n`BK` - Booking number"
+                },
+                {
+                  "key": "sealine",
+                  "value": "maeu",
+                  "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info)"
+                }
+              ]
+            },
+            "description": "Route information"
+          },
+          "response": [
+            {
+              "name": "Untitled Example",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/route?api_key=<API Key>&number=MRKU7181100&type=BL&sealine=maeu",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "route"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "<API Key>",
+                      "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                    },
+                    {
+                      "key": "number",
+                      "value": "MRKU7181100",
+                      "description": "Container number, Bill of Lading or Booking number. \n\nFor certain sealines, tracking is supported using a combined number in the format `Bill of Lading Number/Container Number` or `Booking Number/Container Number` (e.g., `BL12345678/ABCU1234567` or `BK12345678/ABCU1234567`)."
+                    },
+                    {
+                      "key": "type",
+                      "value": "BL",
+                      "description": "Type of shipment number\n\n `CT` - Container number \n\n`BL` - Bill of lading number \n\n`BK` - Booking number"
+                    },
+                    {
+                      "key": "sealine",
+                      "value": "maeu",
+                      "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info)"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"OK\",\n  \"data\": {\n    \"route\": [\n      {\n        \"path\": [\n          [\n            24.47979,\n            118.08186999999998\n          ],\n          [\n            24.49113405,\n            118.16722284999997\n          ],\n          [\n            24.54407295,\n            118.56553615000001\n          ],\n          [\n            24.555417,\n            118.650889\n          ],\n          [\n            24.667171049999997,\n            119.08913065000002\n          ],\n          [\n            25.188689949999997,\n            121.13425834999998\n          ],\n          [\n            25.300444,\n            121.57249999999999\n          ],\n          [\n            22.586223249999996,\n            145.20312079999997\n          ],\n          [\n            9.919859749999999,\n            -104.5206488\n          ],\n          [\n            7.205639,\n            -80.89002800000003\n          ],\n          [\n            7.210768099999999,\n            -80.82246965000002\n          ],\n          [\n            7.2347039,\n            -80.50719735000001\n          ],\n          [\n            7.239833,\n            -80.439639\n          ],\n          [\n            7.28132885,\n            -80.37256395000003\n          ],\n          [\n            7.47497615,\n            -80.05954705000005\n          ],\n          [\n            7.516472,\n            -79.99247200000002\n          ],\n          [\n            7.73054345,\n            -79.92549055\n          ],\n          [\n            8.729543549999999,\n            -79.61291045000002\n          ],\n          [\n            8.943615,\n            -79.545929\n          ],\n          [\n            9.0070242,\n            -79.59980015000002\n          ],\n          [\n            9.3029338,\n            -79.85119885\n          ],\n          [\n            9.366343,\n            -79.90507000000002\n          ],\n          [\n            10.99826245,\n            -79.04075110000002\n          ],\n          [\n            18.61388655,\n            -75.0072629\n          ],\n          [\n            20.245806,\n            -74.142944\n          ],\n          [\n            21.998333337490987,\n            -75.16153650059721\n          ],\n          [\n            30.176794245782254,\n            -79.91496817005077\n          ],\n          [\n            31.92932158327324,\n            -80.93356067064792\n          ],\n          [\n            32.08354,\n            -81.09983\n          ]\n        ],\n        \"type\": \"SEA\"\n      },\n      {\n        \"path\": [\n          [\n            32.083221,\n            -81.099869\n          ],\n          [\n            32.511677,\n            -83.064117\n          ],\n          [\n            32.545055,\n            -83.159081\n          ],\n          [\n            32.574947,\n            -83.244308\n          ],\n          [\n            32.61055,\n            -83.338669\n          ],\n          [\n            32.651413,\n            -83.427612\n          ],\n          [\n            32.700237,\n            -83.507416\n          ],\n          [\n            32.775661,\n            -83.557938\n          ],\n          [\n            32.840862,\n            -83.620949\n          ],\n          [\n            32.776787,\n            -83.685692\n          ],\n          [\n            32.701237,\n            -83.735214\n          ],\n          [\n            32.65374,\n            -83.759544\n          ]\n        ],\n        \"type\": \"LAND\"\n      }\n    ],\n    \"pin\": [\n      18.801004244953855,\n      178.15809506036499\n    ],\n    \"ais\": {\n      \"status\": \"OK\",\n      \"data\": {\n        \"last_event\": {\n          \"description\": \"Vessel departed\",\n          \"date\": \"2023-06-01 14:15:00\",\n          \"voyage\": \"029E\"\n        },\n        \"discharge_port\": {\n          \"name\": \"Savannah\",\n          \"country_code\": \"US\",\n          \"code\": \"SAV\",\n          \"date\": \"2023-07-13 19:00:00\",\n          \"date_label\": \"ETA\"\n        },\n        \"vessel\": {\n          \"name\": \"YM WIDTH\",\n          \"imo\": 9708447,\n          \"call_sign\": \"VRPE5\",\n          \"mmsi\": 477129300,\n          \"flag\": \"HK\"\n        },\n        \"last_vessel_position\": {\n          \"lat\": 6.026275,\n          \"lng\": 95.04732,\n          \"updated_at\": \"2023-06-14 13:06:55\"\n        },\n        \"departure_port\": {\n          \"country_code\": \"SG\",\n          \"code\": \"SIN\",\n          \"date\": \"2023-06-13 13:09:00\",\n          \"date_label\": \"ATD\"\n        },\n        \"arrival_port\": {\n          \"country_code\": \"EG\",\n          \"code\": \"SUZ\",\n          \"date\": \"2023-06-24 20:00:00\",\n          \"date_label\": \"ETA\"\n        },\n        \"updated_at\": \"2023-06-14 15:49:22\"\n      }\n    }\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "info",
+      "item": [
+        {
+          "name": "sealines",
+          "item": [
+            {
+              "name": "Shipping lines info",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/info/sealines",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "info",
+                    "sealines"
+                  ]
+                },
+                "description": "Data about the shipping lines we support"
+              },
+              "response": [
+                {
+                  "name": "Untitled Example",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/info/sealines",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "info",
+                        "sealines"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"status\": \"success\",\n  \"message\": \"OK\",\n  \"data\": [\n    {\n      \"name\": \"Mediterranean Shipping Company (MSC)\",\n      \"active\": true,\n      \"active_types\": {\n        \"ct\": true,\n        \"bl\": true,\n        \"bk\": true,\n        \"bl_ct\": false,\n        \"bk_ct\": false\n      },\n      \"maintenance\": false,\n      \"scac_codes\": [\n        \"MSCU\",\n        \"MEDU\"\n      ],\n      \"prefixes\": [\n        \"MSC\",\n        \"MSD\",\n        \"MSM\",\n        \"MSB\",\n        \"MSG\",\n        \"MAD\",\n        \"MSP\",\n        \"MSZ\",\n        \"GTI\",\n        \"MED\",\n        \"MSY\",\n        \"MST\",\n        \"MSN\",\n        \"MSV\"\n      ]\n    },\n    {\n      \"name\": \"ZIM\",\n      \"active\": true,\n      \"active_types\": {\n        \"ct\": true,\n        \"bl\": true,\n        \"bk\": true,\n        \"bl_ct\": false,\n        \"bk_ct\": false\n      },\n      \"maintenance\": false,\n      \"scac_codes\": [\n        \"ZIMU\"\n      ],\n      \"prefixes\": [\n        \"ZCL\",\n        \"ZCS\",\n        \"ZIM\",\n        \"ZMO\",\n        \"ZWF\"\n      ]\n    }\n  ]\n}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "history",
+      "item": [
+        {
+          "name": "Historical data",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}",
+                  "type": "string"
+                },
+                {
+                  "key": "in",
+                  "value": "query",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/history?api_key=string&number=MRKU7181100&type=BL&sealine=maeu",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "history"
+              ],
+              "query": [
+                {
+                  "key": "api_key",
+                  "value": "string",
+                  "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                },
+                {
+                  "key": "number",
+                  "value": "MRKU7181100",
+                  "description": "Container number, Bill of Lading or Booking number. \n\nFor certain sealines, tracking is supported using a combined number in the format `Bill of Lading Number/Container Number` or `Booking Number/Container Number` (e.g., `BL12345678/ABCU1234567` or `BK12345678/ABCU1234567`)."
+                },
+                {
+                  "key": "type",
+                  "value": "BL",
+                  "description": "Type of shipment number\n\n `CT` - Container number \n\n`BL` - Bill of lading number \n\n`BK` - Booking number"
+                },
+                {
+                  "key": "sealine",
+                  "value": "maeu",
+                  "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info) \n\n If this parameter is empty or equal to auto or not represented at all in the query, we will try to determine the shipping line automatically."
+                }
+              ]
+            },
+            "description": "Historical shipping data"
+          },
+          "response": [
+            {
+              "name": "Untitled Example",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/history?api_key=<API Key>&number=MRKU7181100&type=BL&sealine=maeu",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "history"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "<API Key>",
+                      "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                    },
+                    {
+                      "key": "number",
+                      "value": "MRKU7181100",
+                      "description": "Container number, Bill of Lading or Booking number. \n\nFor certain sealines, tracking is supported using a combined number in the format `Bill of Lading Number/Container Number` or `Booking Number/Container Number` (e.g., `BL12345678/ABCU1234567` or `BK12345678/ABCU1234567`)."
+                    },
+                    {
+                      "key": "type",
+                      "value": "BL",
+                      "description": "Type of shipment number\n\n `CT` - Container number \n\n`BL` - Bill of lading number \n\n`BK` - Booking number"
+                    },
+                    {
+                      "key": "sealine",
+                      "value": "maeu",
+                      "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info) \n\n If this parameter is empty or equal to auto or not represented at all in the query, we will try to determine the shipping line automatically."
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"OK\",\n  \"data\": {\n    \"metadata\": {\n      \"type\": \"CT\",\n      \"number\": \"MSKU7117653\",\n      \"sealine\": \"\",\n      \"sealine_name\": null,\n      \"status\": \"UNKNOWN\",\n      \"updated_at\": \"2023-06-15 12:00:23\",\n      \"api_calls\": {\n        \"total\": 100,\n        \"used\": 1,\n        \"remaining\": 99\n      },\n      \"unique_shipments\": {\n        \"total\": 0,\n        \"used\": 0,\n        \"remaining\": 0\n      }\n    },\n    \"requests\": [\n      {\n        \"date\": \"2021-07-25 10:58:04\",\n        \"sealine\": \"maeu\",\n        \"id\": 61118083\n      },\n      {\n        \"date\": \"2021-08-15 19:15:59\",\n        \"sealine\": \"maeu\",\n        \"id\": 67771922\n      },\n      {\n        \"date\": \"2022-02-03 06:23:53\",\n        \"sealine\": \"maeu\",\n        \"id\": 134036490\n      },\n      {\n        \"date\": \"2022-05-24 12:34:54\",\n        \"sealine\": \"maeu\",\n        \"id\": 182782146\n      },\n      {\n        \"date\": \"2022-06-22 09:08:02\",\n        \"sealine\": \"maeu\",\n        \"id\": 196885782\n      },\n      {\n        \"date\": \"2022-10-12 07:31:10\",\n        \"sealine\": \"maeu\",\n        \"id\": 260377336\n      },\n      {\n        \"date\": \"2023-02-03 05:28:37\",\n        \"sealine\": \"maeu\",\n        \"id\": 306555693\n      },\n      {\n        \"date\": \"2023-02-07 09:54:26\",\n        \"sealine\": \"maeu\",\n        \"id\": 308285366\n      },\n      {\n        \"date\": \"2023-05-22 07:25:51\",\n        \"sealine\": \"maeu\",\n        \"id\": 356065796\n      },\n      {\n        \"date\": \"2023-06-15 10:30:06\",\n        \"sealine\": \"maeu\",\n        \"id\": 366830221\n      }\n    ]\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "history?id={id}",
+      "item": [
+        {
+          "name": "Historical data by id",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}",
+                  "type": "string"
+                },
+                {
+                  "key": "in",
+                  "value": "query",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/history?id={{id}}&api_key=string&number=MRKU7181100&type=BL&sealine=maeu",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "history"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{id}}"
+                },
+                {
+                  "key": "api_key",
+                  "value": "string",
+                  "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                },
+                {
+                  "key": "number",
+                  "value": "MRKU7181100",
+                  "description": "Container number, Bill of Lading or Booking number. \n\nFor certain sealines, tracking is supported using a combined number in the format `Bill of Lading Number/Container Number` or `Booking Number/Container Number` (e.g., `BL12345678/ABCU1234567` or `BK12345678/ABCU1234567`)."
+                },
+                {
+                  "key": "type",
+                  "value": "BL",
+                  "description": "Type of shipment number\n\n `CT` - Container number \n\n`BL` - Bill of lading number \n\n`BK` - Booking number"
+                },
+                {
+                  "key": "sealine",
+                  "value": "maeu",
+                  "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info) \n\n If this parameter is empty or equal to auto or not represented at all in the query, we will try to determine the shipping line automatically."
+                }
+              ]
+            },
+            "description": "Historical shipping data by id"
+          },
+          "response": [
+            {
+              "name": "Untitled Example",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/history?api_key=<API Key>&number=MRKU7181100&type=BL&sealine=maeu",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "history"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "<API Key>",
+                      "description": "Your API key. If you do not have an api key - contact us to purchase a subscription."
+                    },
+                    {
+                      "key": "number",
+                      "value": "MRKU7181100",
+                      "description": "Container number, Bill of Lading or Booking number. \n\nFor certain sealines, tracking is supported using a combined number in the format `Bill of Lading Number/Container Number` or `Booking Number/Container Number` (e.g., `BL12345678/ABCU1234567` or `BK12345678/ABCU1234567`)."
+                    },
+                    {
+                      "key": "type",
+                      "value": "BL",
+                      "description": "Type of shipment number\n\n `CT` - Container number \n\n`BL` - Bill of lading number \n\n`BK` - Booking number"
+                    },
+                    {
+                      "key": "sealine",
+                      "value": "maeu",
+                      "description": "Standard Carrier Alpha Code (SCAC). A list of supported lines can be obtained from the following API - see [GET /info/sealines](https://docs.searates.com/reference/tracking/shipping-lines-info) \n\n If this parameter is empty or equal to auto or not represented at all in the query, we will try to determine the shipping line automatically."
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"OK\",\n  \"data\": {\n    \"metadata\": {\n      \"type\": \"CT\",\n      \"number\": \"MSKU7117653\",\n      \"sealine\": \"MAEU\",\n      \"sealine_name\": \"Maersk\",\n      \"status\": \"UNKNOWN\",\n      \"updated_at\": \"2021-08-01 14:13:44\",\n      \"api_calls\": {\n        \"total\": 100,\n        \"used\": 1,\n        \"remaining\": 99\n      },\n      \"unique_shipments\": {\n        \"total\": 0,\n        \"used\": 0,\n        \"remaining\": 0\n      }\n    },\n    \"locations\": [\n      {\n        \"id\": 1,\n        \"name\": \"Ravenna\",\n        \"state\": \"Emilia-Romagna\",\n        \"country\": \"Italy\",\n        \"country_code\": \"IT\",\n        \"locode\": \"ITRAN\",\n        \"lat\": 44.41344,\n        \"lng\": 12.20121\n      },\n      {\n        \"id\": 2,\n        \"name\": \"Trieste\",\n        \"state\": \"Friuli Venezia Giulia\",\n        \"country\": \"Italy\",\n        \"country_code\": \"IT\",\n        \"locode\": null,\n        \"lat\": 45.64953,\n        \"lng\": 13.77678\n      },\n      {\n        \"id\": 3,\n        \"name\": \"Tianjin Xingang\",\n        \"state\": \"Tianjin Shi\",\n        \"country\": \"China\",\n        \"country_code\": \"CN\",\n        \"locode\": \"CNTXG\",\n        \"lat\": 39.14222,\n        \"lng\": 117.17667\n      }\n    ],\n    \"route\": {\n      \"prepol\": {\n        \"location\": 3,\n        \"date\": \"2021-06-19 16:01:00\",\n        \"actual\": true\n      },\n      \"pol\": {\n        \"location\": 3,\n        \"date\": \"2021-06-22 18:00:00\",\n        \"actual\": true\n      },\n      \"pod\": {\n        \"location\": null,\n        \"date\": \"2021-08-17 19:00:00\",\n        \"actual\": false,\n        \"predictive_eta\": null\n      },\n      \"postpod\": {\n        \"location\": 1,\n        \"date\": null,\n        \"actual\": null\n      }\n    },\n    \"vessels\": [\n      {\n        \"id\": 1,\n        \"name\": \"MAERSK HONG KONG\",\n        \"imo\": 9784257,\n        \"call_sign\": \"9V5392\",\n        \"mmsi\": 563017800,\n        \"flag\": \"SG\"\n      },\n      {\n        \"id\": 2,\n        \"name\": \"BF PHILIPP\",\n        \"imo\": 9123324,\n        \"call_sign\": \"V2HF2\",\n        \"mmsi\": 304688000,\n        \"flag\": \"AG\"\n      }\n    ],\n    \"containers\": [\n      {\n        \"number\": \"MSKU7117653\",\n        \"iso_code\": \"22G1\",\n        \"status\": \"UNKNOWN\",\n        \"events\": [\n          {\n            \"location\": 3,\n            \"description\": \"Gate out Empty\",\n            \"status\": \"CEP\",\n            \"date\": \"2021-06-19 16:01:00+00\",\n            \"actual\": true,\n            \"type\": \"land\",\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"location\": 3,\n            \"description\": \"Gate in\",\n            \"status\": \"CGI\",\n            \"date\": \"2021-06-22 18:00:00+00\",\n            \"actual\": true,\n            \"type\": \"land\",\n            \"vessel\": null,\n            \"voyage\": null\n          },\n          {\n            \"location\": 3,\n            \"description\": \"Load\",\n            \"status\": \"CLL\",\n            \"date\": \"2021-06-24 13:26:00+00\",\n            \"actual\": true,\n            \"type\": \"sea\",\n            \"vessel\": 1,\n            \"voyage\": \"125W\"\n          },\n          {\n            \"location\": 2,\n            \"description\": \"Discharge\",\n            \"status\": \"CDT\",\n            \"date\": \"2021-08-11 19:00:00+00\",\n            \"actual\": false,\n            \"type\": \"sea\",\n            \"vessel\": 1,\n            \"voyage\": \"125W\"\n          },\n          {\n            \"location\": 2,\n            \"description\": \"Load\",\n            \"status\": \"CLT\",\n            \"date\": \"2021-08-28 07:00:00+00\",\n            \"actual\": false,\n            \"type\": \"sea\",\n            \"vessel\": 2,\n            \"voyage\": \"2165\"\n          },\n          {\n            \"location\": 1,\n            \"description\": \"Discharge\",\n            \"status\": \"CDT\",\n            \"date\": \"2021-08-28 07:00:06+00\",\n            \"actual\": false,\n            \"type\": \"sea\",\n            \"vessel\": 2,\n            \"voyage\": \"2165\"\n          },\n          {\n            \"location\": 1,\n            \"description\": \"Gate out\",\n            \"status\": \"LTS\",\n            \"date\": \"2021-08-28 07:00:13+00\",\n            \"actual\": false,\n            \"type\": \"land\",\n            \"vessel\": null,\n            \"voyage\": null\n          }\n        ]\n      }\n    ]\n  }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://tracking.searates.com"
+    },
+    {
+      "key": "id",
+      "value": "63242703"
+    }
+  ]
+}

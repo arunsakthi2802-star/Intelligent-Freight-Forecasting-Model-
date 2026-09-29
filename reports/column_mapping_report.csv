@@ -1,0 +1,13 @@
+dataset,original_column,mapped_column
+freight,Date,date
+freight,Origin,origin_port
+freight,Destination,destination_port
+freight,Container,container_type
+freight,Freight Rate,freight_rate_usd
+freight,URL,URL
+fuel,timestamp,date
+fuel,oil_price,oil_price
+port,date,date
+port,port,port
+port,port_throughput_teu,port_throughput_teu
+port,port_waiting_hours,port_waiting_hours

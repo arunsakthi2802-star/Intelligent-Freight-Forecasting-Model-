@@ -1,0 +1,6 @@
+{
+    "model_name": "ensemble",
+    "algorithm": "RandomForest",
+    "MAE": 1.2,
+    "RMSE": 1.5
+}

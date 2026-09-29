@@ -1,0 +1,95 @@
+{
+    "model_name": "Master Super ML Multi-Model Maritime Ensemble",
+    "version": "4.0",
+    "training_date": "2026-09-29 02:34:12 UTC",
+    "dataset_source": "Global Fuel Prices (2020-2026), NOAA/AIS 241MB Maritime Dataset, UN Comtrade Seaborne Trade",
+    "training_samples": 17760,
+    "features_numeric": [
+        "distance_nm",
+        "speed_knots",
+        "dwt",
+        "capacity_teu",
+        "brent_crude_usd",
+        "vlsfo_price_usd",
+        "uses_suez",
+        "uses_panama",
+        "month",
+        "quarter"
+    ],
+    "features_categorical": [
+        "origin_port",
+        "destination_port",
+        "vessel_class"
+    ],
+    "target": "spot_freight_rate_usd",
+    "R2": 1.0,
+    "MAE": 0.42,
+    "RMSE": 0.66,
+    "MAPE": 0.3,
+    "fuel_model_R2": 1.0,
+    "fuel_model_MAE_MT": 0.0,
+    "duration_model_R2": 1.0,
+    "duration_model_MAE_Days": 0.0,
+    "feature_importances": [
+        {
+            "feature": "dwt",
+            "importance": 31.505
+        },
+        {
+            "feature": "distance_nm",
+            "importance": 29.474
+        },
+        {
+            "feature": "vessel_class_FEEDER",
+            "importance": 18.832
+        },
+        {
+            "feature": "speed_knots",
+            "importance": 7.189
+        },
+        {
+            "feature": "capacity_teu",
+            "importance": 5.336
+        },
+        {
+            "feature": "vessel_class_SUPRAMAX_BULK",
+            "importance": 4.439
+        },
+        {
+            "feature": "vessel_class_PANAMAX",
+            "importance": 0.923
+        },
+        {
+            "feature": "uses_suez",
+            "importance": 0.534
+        },
+        {
+            "feature": "origin_port_CNSHA",
+            "importance": 0.38
+        },
+        {
+            "feature": "destination_port_NLRTM",
+            "importance": 0.374
+        },
+        {
+            "feature": "vlsfo_price_usd",
+            "importance": 0.363
+        },
+        {
+            "feature": "origin_port_INBOM",
+            "importance": 0.246
+        },
+        {
+            "feature": "vessel_class_CAPESIZE_ULCV",
+            "importance": 0.158
+        },
+        {
+            "feature": "brent_crude_usd",
+            "importance": 0.153
+        },
+        {
+            "feature": "origin_port_SGSIN",
+            "importance": 0.036
+        }
+    ]
+}

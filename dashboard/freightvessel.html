@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voyage Calculator & Freight Estimator</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcKZ18GLlGVS_72a96SAEH2oaS1kOH_XM&libraries=geometry"></script>
+  <style>
+    .split-layout { display: flex; height: calc(100vh - 56px); }
+    .input-panel { width: 450px; background: var(--bg-secondary); padding: 24px; overflow-y: auto; border-right: 1px solid var(--border-color); }
+    .map-panel { flex: 1; position: relative; }
+    #voyageMap { width: 100%; height: 100%; }
+    .section-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; }
+    .box-title { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: var(--accent-blue); }
+    .btn-submit { background: var(--gradient-blue); color: white; border: none; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; width: 100%; transition: var(--transition); }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: var(--shadow-glow-blue); }
+    
+    .result-card { background: var(--bg-card); border: 1px solid var(--accent-emerald); border-radius: var(--radius-md); padding: 16px; margin-top: 20px; box-shadow: 0 0 15px rgba(16,185,129,0.1); }
+    .cost-big { font-size: 28px; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--accent-emerald); margin-bottom: 8px; }
+    .cost-item { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .vessel-rec { background: var(--bg-input); padding: 12px; border-radius: var(--radius-sm); margin-top: 12px; border-left: 3px solid var(--accent-blue); }
+    .vessel-rec-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .vessel-rec-details { font-size: 12px; color: var(--text-secondary); }
+  </style>
+</head>
+<body class="app-container">
+
+  <div class="sidebar">
+    <div class="sidebar-logo" onclick="window.location.href='/dashboard'">🌊</div>
+    <div class="sidebar-nav">
+      <div class="nav-item" onclick="window.location.href='/dashboard'" title="Back to Dashboard">⬅️</div>
+    </div>
+  </div>
+
+  <div class="main-content" style="margin-left: 72px;">
+    <div class="top-header">
+      <div class="header-title">🚢 Customer Voyage Calculator & Extimation</div>
+    </div>
+    
+    <div class="split-layout">
+      <!-- Left Panel: Input Form -->
+      <div class="input-panel">
+        <div class="section-box">
+          <div class="box-title">📍 Route Parameters</div>
+          <form id="calcForm" onsubmit="calculateVoyage(event)">
+            <div class="form-group">
+              <label class="form-label">Origin Port</label>
+              <select id="origin" class="form-select" required></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Destination Port</label>
+              <select id="dest" class="form-select" required></select>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Cargo (Tonnes)</label>
+                <input type="number" id="cargo" class="form-input" value="15000" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Container</label>
+                <select id="container" class="form-select">
+                  <option value="20ft">20ft Standard</option>
+                  <option value="40ft">40ft Standard</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn-submit" id="calcBtn">Calculate Route & Price</button>
+          </form>
+        </div>
+
+        <div id="resultsContainer" style="display: none;">
+          <div class="result-card">
+            <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase;">Estimated Total Price</div>
+            <div class="cost-big" id="resTotalPrice"></div>
+            
+            <div style="margin-top: 16px;">
+              <div class="cost-item">
+                <span style="color: var(--text-secondary)">Route Distance</span>
+                <span id="resDistance" style="font-family: monospace; font-weight: 600;"></span>
+              </div>
+              <div class="cost-item">
+                <span style="color: var(--text-secondary)">Estimated Duration</span>
+                <span id="resDuration" style="font-family: monospace; font-weight: 600;"></span>
+              </div>
+              <div class="cost-item">
+                <span style="color: var(--text-secondary)">Optimal Speed</span>
+                <span id="resSpeed" style="font-family: monospace; font-weight: 600; color: var(--accent-blue);"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-box" style="margin-top: 20px;">
+            <div class="box-title">💰 Price & Fuel Breakdown</div>
+            <div class="cost-item">
+              <span>Fuel Consumption (Tons)</span><span id="resFuelTons" style="font-weight: bold; color: var(--accent-cyan);"></span>
+            </div>
+            <div class="cost-item">
+              <span>Fuel Cost</span><span id="costFuel"></span>
+            </div>
+            <div class="cost-item">
+              <span>Vessel Charter</span><span id="costCharter"></span>
+            </div>
+            <div class="cost-item">
+              <span>Port Handling</span><span id="costPort"></span>
+            </div>
+            <div class="cost-item">
+              <span>Canal Fees</span><span id="costCanal"></span>
+            </div>
+          </div>
+
+          <div class="section-box">
+            <div class="box-title">🚢 Recommended Vessels</div>
+            <div id="vesselList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Map -->
+      <div class="map-panel">
+        <div id="voyageMap"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    const API = 'http://localhost:8001';
+    let map, routeLayer;
+    let markers = [];
+
+    // Initialize map
+    document.addEventListener('DOMContentLoaded', async () => {
+      map = L.map('voyageMap', { zoomControl: true, attributionControl: false }).setView([15, 75], 4);
+      L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&key=AIzaSyBcKZ18GLlGVS_72a96SAEH2oaS1kOH_XM', { 
+        subdomains: ['0', '1', '2', '3'], 
+        maxZoom: 20, 
+        attribution: '© Google Maps' 
+      }).addTo(map);
+      L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+
+      // Load ports
+      try {
+        const res = await fetch(`${API}/api/ports`);
+        const data = await res.json();
+        const originSel = document.getElementById('origin');
+        const destSel = document.getElementById('dest');
+        
+        data.ports.forEach(p => {
+          if (p.type === 'waypoint') return;
+          const opt1 = document.createElement('option');
+          opt1.value = p.code; opt1.textContent = `${p.name} (${p.code})`;
+          const opt2 = opt1.cloneNode(true);
+          originSel.appendChild(opt1);
+          destSel.appendChild(opt2);
+        });
+        
+        originSel.value = 'INMAA'; // Default Chennai
+        destSel.value = 'AEDXB';   // Default Dubai
+      } catch (e) {
+        showToast('Failed to load ports', 'error');
+      }
+    });
+
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<span>ℹ️</span> ${msg}`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    async function calculateVoyage(e) {
+      e.preventDefault();
+      const origin = document.getElementById('origin').value;
+      const dest = document.getElementById('dest').value;
+      
+      if (origin === dest) return showToast("Origin and Destination cannot be the same", "error");
+      
+      document.getElementById('calcBtn').textContent = "Calculating...";
+
+      try {
+        const res = await fetch(`${API}/api/routes/plan`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            origin_port: origin,
+            destination_port: dest,
+            cargo_quantity_tonnes: parseFloat(document.getElementById('cargo').value),
+            container_type: document.getElementById('container').value
+          })
+        });
+        const data = await res.json();
+
+        // Show Results Panel
+        document.getElementById('resultsContainer').style.display = 'block';
+
+        // Draw Route on Map
+        if (routeLayer) map.removeLayer(routeLayer);
+        markers.forEach(m => map.removeLayer(m));
+        markers = [];
+
+        if (data.route_path && data.route_path.length > 0) {
+          routeLayer = L.polyline(data.route_path, { color: '#06b6d4', weight: 4, dashArray: '10, 5' }).addTo(map);
+          
+          const iconOpts = { className: '', iconSize: [24,24], iconAnchor: [12,12] };
+          const origIcon = L.divIcon({ ...iconOpts, html: `<div style="width:24px;height:24px;border-radius:50%;background:#10b981;border:2px solid #fff;"></div>` });
+          const destIcon = L.divIcon({ ...iconOpts, html: `<div style="width:24px;height:24px;border-radius:50%;background:#f43f5e;border:2px solid #fff;"></div>` });
+          
+          markers.push(L.marker([data.origin.lat, data.origin.lon], {icon: origIcon}).addTo(map).bindPopup("Origin: " + data.origin.name));
+          markers.push(L.marker([data.destination.lat, data.destination.lon], {icon: destIcon}).addTo(map).bindPopup("Destination: " + data.destination.name));
+          
+          map.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
+        }
+
+        // Update UI
+        const fmtUSD = (n) => '$' + Number(n).toLocaleString('en-IN', {maximumFractionDigits:0});
+        const cost = data.cost_analysis[0]; // Eco profile
+
+        document.getElementById('resTotalPrice').textContent = fmtUSD(cost.total_cost);
+        document.getElementById('resDistance').textContent = `${Number(data.distance_nm).toLocaleString()} nm`;
+        document.getElementById('resDuration').textContent = `${cost.duration_days} days`;
+        document.getElementById('resSpeed').textContent = `${cost.speed_knots} Knots`;
+        
+        document.getElementById('resFuelTons').textContent = `${Number(cost.fuel_tons).toLocaleString()} Tons`;
+        document.getElementById('costFuel').textContent = fmtUSD(cost.fuel_cost);
+        document.getElementById('costCharter').textContent = fmtUSD(cost.charter_cost);
+        document.getElementById('costPort').textContent = fmtUSD(cost.port_handling);
+        document.getElementById('costCanal').textContent = fmtUSD(cost.canal_fee);
+
+        // Vessels
+        document.getElementById('vesselList').innerHTML = data.available_vessels.slice(0,3).map(v => `
+          <div class="vessel-rec">
+            <div class="vessel-rec-title">${v.name} <span style="font-weight:400; font-size:11px; float:right; background:var(--accent-emerald-dim); color:var(--accent-emerald); padding:2px 6px; border-radius:10px;">Available</span></div>
+            <div class="vessel-rec-details">IMO: ${v.imo} | Cap: ${Number(v.capacity_teu).toLocaleString()} TEU | Spd: ${v.speed_knots} kn</div>
+          </div>
+        `).join('');
+
+        showToast("Route calculation complete!", "success");
+
+      } catch (err) {
+        showToast("Calculation failed", "error");
+      } finally {
+        document.getElementById('calcBtn').textContent = "Calculate Route & Price";
+      }
+    }
+  </script>
+</body>
+</html>

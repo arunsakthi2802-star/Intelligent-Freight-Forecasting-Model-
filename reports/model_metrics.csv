@@ -1,0 +1,2 @@
+model_name,MAE,RMSE,R2,MAPE,training_rows,validation_rows,test_rows
+Master Super ML Multi-Model Maritime Ensemble,52.98553534065941,59.47337668954624,0.9937286363527854,1.635980770098538,207,45,45

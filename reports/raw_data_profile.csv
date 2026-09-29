@@ -1,0 +1,31 @@
+dataset,column_name,data_type,row_count,unique_count,missing_count,missing_percentage,minimum,maximum,mean,median,standard_deviation,unique_values
+freight,date,str,316,150,0,0.0,,,,,,"<ArrowStringArray>
+['2023-01-01', '2023-01-08', '2023-01-15', '2023-01-22', '2023-01-29']
+Length: 5, dtype: str"
+freight,origin_port,str,316,2,0,0.0,,,,,,"<ArrowStringArray>
+['INMAA', 'CNSHA']
+Length: 2, dtype: str"
+freight,destination_port,str,316,2,0,0.0,,,,,,"<ArrowStringArray>
+['AEDXB', 'USLAX']
+Length: 2, dtype: str"
+freight,container_type,str,316,1,0,0.0,,,,,,"<ArrowStringArray>
+['20 FT']
+Length: 1, dtype: str"
+freight,freight_rate_usd,float64,316,300,0,0.0,-500.0,15000.0,3177.583209719378,3741.4139289139216,1027.6292165292637,
+freight,URL,str,316,1,0,0.0,,,,,,"<ArrowStringArray>
+['http://example.com']
+Length: 1, dtype: str"
+fuel,date,str,150,150,0,0.0,,,,,,"<ArrowStringArray>
+['2023-01-01', '2023-01-08', '2023-01-15', '2023-01-22', '2023-01-29']
+Length: 5, dtype: str"
+fuel,oil_price,str,150,146,0,0.0,,,,,,"<ArrowStringArray>
+['$80.00', '$81.10', '$82.19', '$83.26', '$84.29']
+Length: 5, dtype: str"
+port,date,str,600,150,0,0.0,,,,,,"<ArrowStringArray>
+['2023-01-01', '2023-01-08', '2023-01-15', '2023-01-22', '2023-01-29']
+Length: 5, dtype: str"
+port,port,str,600,4,0,0.0,,,,,,"<ArrowStringArray>
+['INMAA', 'AEDXB', 'CNSHA', 'USLAX']
+Length: 4, dtype: str"
+port,port_throughput_teu,int64,600,150,0,0.0,150000.0,299000.0,224500.0,224500.0,43336.436685245484,
+port,port_waiting_hours,float64,600,600,0,0.0,2.174176365030066,16.414189057188086,10.071391586806442,10.171600607777005,2.0907144993290196,

@@ -1,0 +1,17 @@
+{
+    "total_rows": 297,
+    "total_columns": 43,
+    "date_min": "2023-01-01",
+    "date_max": "2025-11-02",
+    "missing_values": 4379,
+    "duplicate_count": 0,
+    "outlier_count": 2,
+    "target_statistics": {
+        "mean": 3176.504891801698,
+        "median": 3733.781300133535,
+        "std": 1021.579591448189
+    },
+    "feature_count": 40,
+    "route_count": 2,
+    "container_type_count": 1
+}

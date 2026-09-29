@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIH26006 Freight Selection AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-panel: rgba(30, 41, 59, 0.7);
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --accent: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease;
+        }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .panel {
+            background: var(--bg-panel);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease;
+        }
+        .panel:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255,255,255,0.2);
+        }
+        .panel h2 {
+            font-size: 1.2rem;
+            margin-top: 0;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(to right, var(--primary), #6366f1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            grid-column: 1 / -1;
+            margin-top: 1rem;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #results-container {
+            display: none;
+            margin-top: 3rem;
+            animation: fadeIn 0.5s ease;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .metric-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #34d399;
+            margin: 0.5rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .btn-primary:hover { background-color: #2563eb; transform: translateY(-1px); }
+        
+        /* Modal Styles */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            margin: 5% auto; padding: 2rem; border: 1px solid #334155; border-radius: 12px;
+            width: 80%; max-width: 1000px; color: white;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .close-btn { color: #94a3b8; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-btn:hover { color: white; }
+        #vessel-map { height: 400px; width: 100%; border-radius: 8px; margin-top: 1rem; background: #0f172a; }
+        .ml-stats { display: flex; gap: 1rem; margin-top: 1rem; }
+        .ml-stat-card { background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; flex: 1; border: 1px solid #334155; }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Freight Optimizer</h1>
+            <p style="color: var(--text-muted);">Predict costs, evaluate feasibility, and analyze risks using ML</p>
+        </header>
+
+        <form id="freight-form" class="grid">
+            <!-- Trade & Cargo -->
+            <div class="panel">
+                <h2>1. Logistics & Cargo</h2>
+                <div class="form-group">
+                    <label>Trade Direction</label>
+                    <select id="trade_direction">
+                        <option value="IMPORT">IMPORT</option>
+                        <option value="EXPORT">EXPORT</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cargo Type</label>
+                    <select id="cargo_type">
+                        <option value="COAL">Coal</option>
+                        <option value="IRON_ORE">Iron Ore</option>
+                        <option value="GRAIN">Grain</option>
+                        <option value="CRUDE_OIL">Crude Oil</option>
+                        <option value="LNG">Liquefied Natural Gas (LNG)</option>
+                        <option value="CONTAINER_GENERAL">General Container Goods</option>
+                        <option value="ELECTRONICS">Electronics</option>
+                        <option value="AUTOMOBILES">Automobiles & Vehicles</option>
+                        <option value="CHEMICALS">Chemicals</option>
+                        <option value="LIVESTOCK">Livestock</option>
+                        <option value="TIMBER">Timber & Wood Products</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity (Tonnes)</label>
+                    <input type="number" id="quantity" value="75000" min="1000">
+                </div>
+            </div>
+
+            <!-- Ports -->
+            <div class="panel">
+                <h2>2. Geography</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Origin Country</label>
+                        <input type="text" id="origin_country" value="AUSTRALIA" list="countries_list">
+                    </div>
+                    <div class="form-group">
+                        <label>Origin Port</label>
+                        <input type="text" id="origin_port" value="GLADSTONE" list="ports_list">
+                    </div>
+                    <div class="form-group">
+                        <label>Dest Country</label>
+                        <input type="text" id="dest_country" value="INDIA" list="countries_list">
+                    </div>
+                    <div class="form-group">
+                        <label>Dest Port</label>
+                        <input type="text" id="dest_port" value="DHAMRA" list="ports_list">
+                    </div>
+                </div>
+                
+                <datalist id="countries_list">
+                    <option value="AUSTRALIA"></option>
+                    <option value="INDIA"></option>
+                    <option value="CHINA"></option>
+                    <option value="UNITED STATES"></option>
+                    <option value="BRAZIL"></option>
+                    <option value="JAPAN"></option>
+                    <option value="SINGAPORE"></option>
+                    <option value="NETHERLANDS"></option>
+                    <option value="GERMANY"></option>
+                    <option value="SOUTH KOREA"></option>
+                </datalist>
+                
+                <datalist id="ports_list">
+                    <option value="GLADSTONE"></option>
+                    <option value="DHAMRA"></option>
+                    <option value="PARADIP"></option>
+                    <option value="NEWCASTLE"></option>
+                    <option value="BRISBANE"></option>
+                    <option value="SHANGHAI"></option>
+                    <option value="SINGAPORE"></option>
+                    <option value="ROTTERDAM"></option>
+                    <option value="LOS ANGELES"></option>
+                    <option value="SANTOS"></option>
+                </datalist>
+            </div>
+
+            <!-- Vessels & Dates -->
+            <div class="panel" style="grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <h2>3. Vessel Requirements</h2>
+                    <div class="form-group">
+                        <label>Target Vessel Classes (Hold Ctrl to multi-select)</label>
+                        <select id="vessel_classes" multiple style="height: 100px;">
+                            <option value="HANDYSIZE">Handysize</option>
+                            <option value="SUPRAMAX">Supramax</option>
+                            <option value="PANAMAX" selected>Panamax</option>
+                            <option value="CAPESIZE" selected>Capesize</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <h2>4. Schedule</h2>
+                    <div class="form-group">
+                        <label>Loading Date</label>
+                        <input type="date" id="loading_date" value="2026-10-15">
+                    </div>
+                    <div class="form-group">
+                        <label>Latest Arrival Deadline</label>
+                        <input type="date" id="arrival_date" value="2026-10-30">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="btn-submit">Run Machine Learning Optimization</button>
+        </form>
+
+        <div id="results-container">
+            <header style="margin-bottom: 2rem;">
+                <h2>Final Decision & Analysis</h2>
+            </header>
+            
+            <div class="result-grid">
+                <div class="metric-card">
+                    <div>Total Logistics Cost</div>
+                    <div class="metric-value" id="res-total-cost">--</div>
+                    <div style="color: var(--text-muted); font-size: 0.9rem;" id="res-per-tonne">--</div>
+                </div>
+                <div class="metric-card" style="background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.2);">
+                    <div style="color: #60a5fa;">ML Freight Forecast</div>
+                    <div class="metric-value" style="color: #93c5fd;" id="res-freight-rate">--</div>
+                    <div style="color: var(--text-muted); font-size: 0.9rem;">per tonne</div>
+                </div>
+                <div class="metric-card" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2);">
+                    <div style="color: #fbbf24;">Availability Status</div>
+                    <div class="metric-value" style="color: #fcd34d; font-size: 1.5rem; margin: 1rem 0;" id="res-availability">--</div>
+                </div>
+            </div>
+
+            <div class="grid" style="margin-top: 2rem;">
+                <div class="panel">
+                    <h2>Feasible Candidate Vessels</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vessel Name</th>
+                                <th>IMO / MMSI</th>
+                                <th>Class</th>
+                                <th>Capacity (DWT)</th>
+                                <th>Predicted Total Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vessel-tbody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel">
+                    <h2>Optimal Route & ETA</h2>
+                    <div style="margin-bottom: 1rem;">
+                        <span style="color: var(--text-muted);">Shortest Navigable Route:</span><br>
+                        <strong id="res-route" style="font-size: 1.1rem;">--</strong>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <span style="color: var(--text-muted);">Weather Risk:</span><br>
+                        <strong id="res-risk" style="color: #10b981;">--</strong>
+                    </div>
+                    <div>
+                        <span style="color: var(--text-muted);">Predicted ETA:</span><br>
+                        <strong id="res-eta">--</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel" style="margin-top: 2rem;">
+                <h2>Alternative Nearby Ports Analysis</h2>
+                <div style="color: var(--text-muted); margin-bottom: 1rem;">Suggested adjacent ports based on cargo availability and ML vessel density clusters.</div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Port Name</th>
+                                <th>Country</th>
+                                <th>Distance (NM)</th>
+                                <th>Available Vessels (ML Cluster)</th>
+                                <th>Available Date & Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alt-ports-tbody">
+                            <tr><td colspan="5" style="text-align:center; color:#94a3b8;">Run optimization to load alternatives</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/map" style="color: var(--primary); text-decoration: none; font-weight: 600;">View Live Tracking Map &rarr;</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function openVesselModal(vessel) {
+            // Save request payload so the new page knows origin and destination
+            const req = {
+                origin_port: document.getElementById('origin_port').value,
+                destination_port: document.getElementById('dest_port').value
+            };
+            localStorage.setItem('lastRequest', JSON.stringify(req));
+            
+            // Save vessel data and redirect to separate page
+            localStorage.setItem('selectedVessel', JSON.stringify(vessel));
+            window.location.href = "/vessel_details";
+        }
+    </script>
+
+
+        
+</body>
+            document.getElementById('modal-dest').textContent = document.getElementById('dest_port').value || "Destination Port";
+            document.getElementById('modal-cost').textContent = `$${vessel.predicted_total_cost.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+            document.getElementById('modal-class').textContent = `${vessel.vessel_class} (${vessel.age} yrs old, ${vessel.dwt.toLocaleString()} t)`;
+
+            // Super Ultra ML Fields
+            document.getElementById('m-imo').textContent = vessel.mmsi || '-';
+            document.getElementById('m-call').textContent = vessel.call_sign || '-';
+            document.getElementById('m-flag').textContent = vessel.flag_state || '-';
+            
+            document.getElementById('m-loa').textContent = (vessel.loa || '-') + 'm / ' + (vessel.beam || '-') + 'm';
+            document.getElementById('m-draft').textContent = (vessel.draft_m || '-') + 'm';
+            document.getElementById('m-freeboard').textContent = (vessel.freeboard || '-') + 'm';
+            
+            document.getElementById('m-speed').textContent = (vessel.speed_knots || '-') + ' knots';
+            document.getElementById('m-course').textContent = (vessel.course || '-') + '°';
+            document.getElementById('m-gps').textContent = (vessel.lat || 0).toFixed(4) + ', ' + (vessel.lon || 0).toFixed(4);
+            
+            document.getElementById('m-vdr').textContent = vessel.vdr_status || '-';
+            document.getElementById('m-inspec').textContent = "Passed (Recent)";
+            document.getElementById('m-engine').textContent = vessel.engine_status || '-';
+            
+            document.getElementById('m-fuel').textContent = (vessel.fuel_consumption_tpd || '-') + ' t/day';
+            document.getElementById('m-emiss').textContent = vessel.emissions_rating || '-';
+            
+            document.getElementById('m-book').href = vessel.booking_link || '#';
+            document.getElementById('m-agent').href = vessel.agent_link || '#';
+
+            if (!mlMap) {
+                mlMap = L.map('vessel-map').setView([20.0, 80.0], 3);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap'
+                }).addTo(mlMap);
+            }
+            
+            mlMapLayers.forEach(l => mlMap.removeLayer(l));
+            mlMapLayers = [];
+
+            // Draw Vessel
+            if (vessel.lat && vessel.lon) {
+                let vLatlng = [vessel.lat, vessel.lon];
+                let vMarker = L.circleMarker(vLatlng, { radius: 8, fillColor: "#10b981", color: "#fff", weight: 2, opacity: 1, fillOpacity: 0.9 }).addTo(mlMap);
+                vMarker.bindPopup(`<b>${vessel.vessel_name}</b><br>IMO: ${vessel.mmsi}`).openPopup();
+                mlMapLayers.push(vMarker);
+                
+                // Draw Historical Route Trail
+                if (vessel.history && vessel.history.length > 1) {
+                    var routeLatlngs = vessel.history.map(pt => [pt[1], pt[0]]);
+                    let hLine = L.polyline(routeLatlngs, { color: '#f59e0b', weight: 2, opacity: 0.5, dashArray: '4, 6' }).addTo(mlMap);
+                    mlMapLayers.push(hLine);
+                }
+                
+                // Draw actual navigable projected sea route
+                let dLatlng = [18.9, 72.8]; // Mock Mumbai for Destination fallback
+                let rLine;
+                if (vessel.sea_route && vessel.sea_route.length > 0) {
+                    var projectedLatlngs = vessel.sea_route.map(pt => [pt[1], pt[0]]);
+                    rLine = L.polyline(projectedLatlngs, { color: "#3b82f6", weight: 3, dashArray: '5, 10' }).addTo(mlMap);
+                    mlMapLayers.push(rLine);
+                    dLatlng = projectedLatlngs[projectedLatlngs.length - 1]; // Use actual last point
+                } else {
+                    rLine = L.polyline([vLatlng, dLatlng], { color: "#3b82f6", weight: 3, dashArray: '5, 10' }).addTo(mlMap);
+                    mlMapLayers.push(rLine);
+                }
+                
+                let dMarker = L.circleMarker(dLatlng, { radius: 6, fillColor: "#ef4444", color: "#fff", weight: 1, fillOpacity: 0.9 }).addTo(mlMap);
+                dMarker.bindPopup(`<b>Destination</b>`);
+                mlMapLayers.push(dMarker);
+
+                mlMap.fitBounds(rLine.getBounds(), { padding: [50, 50] });
+            }
+            
+            setTimeout(() => mlMap.invalidateSize(), 300);
+        }
+
+        function closeVesselModal() {
+            document.getElementById('vesselModal').style.display = 'none';
+        }
+    </script>
+
+    <script>
+        document.getElementById('freight-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            btn.textContent = "Running Models...";
+            btn.style.opacity = "0.7";
+
+            // Gather multi-select
+            const classSelect = document.getElementById('vessel_classes');
+            const classes = Array.from(classSelect.selectedOptions).map(opt => opt.value);
+
+            const payload = {
+                trade_direction: document.getElementById('trade_direction').value,
+                cargo_type: document.getElementById('cargo_type').value,
+                cargo_quantity_tonnes: parseFloat(document.getElementById('quantity').value),
+                origin_country: document.getElementById('origin_country').value,
+                origin_port: document.getElementById('origin_port').value,
+                destination_country: document.getElementById('dest_country').value,
+                destination_port: document.getElementById('dest_port').value,
+                loading_date: document.getElementById('loading_date').value,
+                latest_arrival_date: document.getElementById('arrival_date').value,
+                vessel_classes: classes
+            };
+
+            try {
+                const res = await fetch('/freightselection/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                
+                // Update UI
+                document.getElementById('results-container').style.display = 'block';
+                
+                document.getElementById('res-total-cost').textContent = '$' + data.costs.total_logistics_cost.toLocaleString();
+                document.getElementById('res-per-tonne').textContent = '$' + data.costs.cost_per_tonne + ' per tonne';
+                document.getElementById('res-freight-rate').textContent = '$' + data.freight_forecast.predicted_rate_per_tonne;
+                document.getElementById('res-availability').textContent = data.availability.replace('_', ' ');
+                
+                document.getElementById('res-route').textContent = data.routes.shortest_route;
+                document.getElementById('res-risk').textContent = data.routes.weather_risk;
+                document.getElementById('res-eta').textContent = data.eta.ml_eta;
+
+                const tbody = document.getElementById('vessel-tbody');
+                tbody.innerHTML = '';
+                if(data.vessel_candidates.length > 0) {
+                    data.vessel_candidates.forEach((v, index) => {
+                        const isOptimal = index === 0;
+                        const badge = isOptimal ? '<span style="background:#10b981; color:white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 8px;">★ Optimal</span>' : '';
+                        const verifiedBadge = v.verified_trade_route ? '<span style="background:#3b82f6; color:white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 8px;">✔ Verified Route</span>' : '';
+                        const rowStyle = isOptimal ? 'background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; cursor: pointer;' : 'cursor: pointer;';
+                        
+                        const vJson = JSON.stringify(v).replace(/"/g, '&quot;');
+                        
+                        tbody.innerHTML += `
+                            <tr style="${rowStyle}" onclick='openVesselModal(${vJson})' onmouseover="this.style.backgroundColor='rgba(255,255,255,0.05)'" onmouseout="this.style.backgroundColor='${isOptimal ? 'rgba(16, 185, 129, 0.1)' : 'transparent'}'">
+                                <td style="padding: 1rem 0.75rem;">${v.vessel_name} ${badge} ${verifiedBadge} <br><span style="font-size:0.75rem; color:#94a3b8;">Click for details & route</span></td>
+                                <td style="padding: 1rem 0.75rem; font-family: monospace; font-size: 0.9rem;">${v.mmsi}</td>
+                                <td style="padding: 1rem 0.75rem;">${v.vessel_class}</td>
+                                <td style="padding: 1rem 0.75rem;">${v.dwt.toLocaleString()} t</td>
+                                <td style="padding: 1rem 0.75rem; color:#3b82f6; font-weight: 600;">$${v.predicted_total_cost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                            </tr>
+                        `;
+                    });
+                    
+                    // Update overall UI summary with the best cost
+                    document.getElementById('res-total-cost').textContent = '$' + data.vessel_candidates[0].predicted_total_cost.toLocaleString(undefined, {maximumFractionDigits: 0});
+                    document.getElementById('res-per-tonne').textContent = '$' + data.vessel_candidates[0].cost_per_tonne.toFixed(2) + ' per tonne';
+                    
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: #ef4444; padding: 2rem;">No feasible vessels found in the live stream matching your constraints.</td></tr>';
+                }
+
+                // Update Alternative Ports
+                const altTbody = document.getElementById('alt-ports-tbody');
+                altTbody.innerHTML = '';
+                if(data.alternative_ports && data.alternative_ports.length > 0) {
+                    data.alternative_ports.forEach(alt => {
+                        altTbody.innerHTML += `
+                            <tr>
+                                <td style="padding: 0.75rem;">${alt.port}</td>
+                                <td style="padding: 0.75rem;">${alt.country}</td>
+                                <td style="padding: 0.75rem;">${alt.distance_nm.toLocaleString()}</td>
+                                <td style="padding: 0.75rem; color:#10b981; font-weight:bold;">${alt.vessels_available} Vessels</td>
+                                <td style="padding: 0.75rem;">${alt.available_date} @ ${alt.available_time}</td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    altTbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8;">No adjacent alternatives found.</td></tr>';
+                }
+
+                // Smooth scroll down
+                document.getElementById('results-container').scrollIntoView({ behavior: 'smooth' });
+
+            } catch (err) {
+                alert("Error connecting to prediction engine: " + err);
+            } finally {
+                btn.textContent = "Run Machine Learning Optimization";
+                btn.style.opacity = "1";
+            }
+        });
+
+        // Auto-fetch ML when any input changes
+        const formInputs = document.querySelectorAll('#freight-form input, #freight-form select');
+        formInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                document.getElementById('btn-submit').click();
+            });
+        });
+    </script>
+</body>
+</html>

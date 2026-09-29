@@ -1,0 +1,9 @@
+{
+    "CARGO": 75000,
+    "ORIGIN": "GLADSTONE",
+    "DESTINATION": "DHAMRA",
+    "FEASIBLE_VESSELS": 3,
+    "LOWEST_COST_VESSEL": "Demo Ship A",
+    "EXPECTED_COST": 1125000,
+    "STATUS": "SUCCESS"
+}

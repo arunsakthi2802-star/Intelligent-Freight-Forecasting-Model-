@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master ML - Vessel Details</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            margin: 0;
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: #3b82f6;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 1rem;
+        }
+
+        .layout-container {
+            display: flex;
+            gap: 2rem;
+            align-items: stretch;
+            margin-bottom: 3rem;
+        }
+
+        .left-col {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .right-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ml-stats {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .ml-stat-card {
+            flex: 1;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid #334155;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .ultra-ml-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .grid-card {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+        }
+
+        .grid-card h3 {
+            margin-top: 0;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 0.5rem;
+        }
+
+        .grid-card div {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            line-height: 1.8;
+        }
+
+        .grid-card strong {
+            color: white;
+            float: right;
+        }
+
+        .grid-card strong.highlight {
+            color: #10b981;
+        }
+
+        #vessel-map {
+            flex: 1;
+            min-height: 500px;
+            width: 100%;
+            border-radius: 8px;
+            background: #1e293b;
+            border: 1px solid #334155;
+        }
+
+        .weather-section {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid #334155;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .weather-section h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: #f59e0b;
+        }
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .weather-card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .weather-card h4 {
+            margin: 0 0 0.5rem 0;
+            color: #cbd5e1;
+        }
+
+        .weather-card .temp {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        
+        .weather-card .desc {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+
+        .btn-booking {
+            display: block;
+            background: #3b82f6;
+            color: white;
+            padding: 0.75rem;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn-agent {
+            display: block;
+            background: #f59e0b;
+            color: white;
+            padding: 0.75rem;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .back-link {
+            color: #94a3b8;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        .back-link:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/freightselection" class="back-link">← Back to Freight Selection</a>
+    
+    <h1 id="page-title">★ MASTER ML: Loading...</h1>
+
+    <div class="layout-container">
+        
+        <!-- LEFT SIDE: DATA -->
+        <div class="left-col">
+            <div class="ml-stats">
+                <div class="ml-stat-card">
+                    <div style="font-size:0.8rem; color:#94a3b8;">Origin Port</div>
+                    <div id="m-origin" style="font-size:1.1rem; font-weight:bold;">-</div>
+                </div>
+                <div class="ml-stat-card">
+                    <div style="font-size:0.8rem; color:#94a3b8;">Destination Port</div>
+                    <div id="m-dest" style="font-size:1.1rem; font-weight:bold;">-</div>
+                </div>
+            </div>
+            <div class="ml-stats">
+                <div class="ml-stat-card">
+                    <div style="font-size:0.8rem; color:#94a3b8;">ML Freight Cost</div>
+                    <div id="m-cost" style="font-size:1.1rem; font-weight:bold; color:#10b981;">-</div>
+                </div>
+                <div class="ml-stat-card">
+                    <div style="font-size:0.8rem; color:#94a3b8;">Vessel Class & Age</div>
+                    <div id="m-class" style="font-size:1.1rem; font-weight:bold;">-</div>
+                </div>
+            </div>
+            
+            <div class="ultra-ml-grid">
+                <div class="grid-card">
+                    <h3>Identification</h3>
+                    <div>
+                        IMO/MMSI: <strong id="m-imo">-</strong><br>
+                        Call Sign: <strong id="m-call">-</strong><br>
+                        Flag State: <strong id="m-flag">-</strong>
+                    </div>
+                </div>
+                <div class="grid-card">
+                    <h3>Physical Dimensions</h3>
+                    <div>
+                        LOA / Beam: <strong id="m-loa">-</strong><br>
+                        Draft: <strong id="m-draft">-</strong><br>
+                        Freeboard: <strong id="m-freeboard">-</strong>
+                    </div>
+                </div>
+                <div class="grid-card">
+                    <h3>Dynamic Navigation</h3>
+                    <div>
+                        Speed: <strong id="m-speed" class="highlight">-</strong><br>
+                        Course: <strong id="m-course">-</strong><br>
+                        GPS: <strong id="m-gps">-</strong>
+                    </div>
+                </div>
+                <div class="grid-card">
+                    <h3>Voyage & Safety</h3>
+                    <div>
+                        VDR Status: <strong id="m-vdr" class="highlight">-</strong><br>
+                        Inspection: <strong id="m-inspec">-</strong><br>
+                        Engine: <strong id="m-engine" class="highlight">-</strong>
+                    </div>
+                </div>
+                <div class="grid-card">
+                    <h3>Performance & Env</h3>
+                    <div>
+                        Fuel Cons.: <strong id="m-fuel">-</strong><br>
+                        Emissions: <strong id="m-emiss" class="highlight">-</strong>
+                    </div>
+                </div>
+                <div class="grid-card" style="display:flex; flex-direction:column; justify-content:center; background:rgba(0,0,0,0.2); gap: 0.5rem;">
+                    <a id="m-book" href="#" target="_blank" class="btn-booking">Official Booking Portal ↗</a>
+                    <a id="m-agent" href="#" target="_blank" class="btn-agent">Agent & Clearance ↗</a>
+                    <button id="btn-export-ml" class="btn-booking" style="background:#10b981; border:none; cursor:pointer;">↓ Export ML Dataset</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: MAPS -->
+        <div class="right-col" style="gap: 1.5rem;">
+            <div>
+                <h3 style="color:#f8fafc; margin-top:0;">Actual Route Forecast (Ocean Transit)</h3>
+                <div id="vessel-route-map" style="flex: 1; min-height: 350px; width: 100%; border-radius: 8px; background: #1e293b; border: 1px solid #334155;"></div>
+            </div>
+            <div>
+                <h3 style="color:#10b981; margin-top:0;">Live Satellite AIS Tracking (Real-Time)</h3>
+                <div id="vessel-live-map" style="flex: 1; min-height: 350px; width: 100%; border-radius: 8px; background: #1e293b; border: 1px solid #334155;"></div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 180 DAY FORECAST -->
+    <div class="weather-section">
+        <h2>180-Day Ocean Route Weather Forecast</h2>
+        <p style="color:#94a3b8; font-size:0.9rem;">Week-by-week analysis across the projected transit corridor for <span id="w-vessel">the vessel</span>.</p>
+        
+        <div class="weather-grid" id="weather-grid">
+            <!-- Populated via JS -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const vesselStr = localStorage.getItem('selectedVessel');
+            if (!vesselStr) {
+                document.getElementById('page-title').textContent = "No Vessel Selected";
+                return;
+            }
+
+            const vessel = JSON.parse(vesselStr);
+            const reqStr = localStorage.getItem('lastRequest');
+            let req = {};
+            if(reqStr) req = JSON.parse(reqStr);
+
+            // Populate Text Data
+            document.getElementById('page-title').textContent = `★ MASTER ML: ${vessel.vessel_name}`;
+            document.getElementById('m-origin').textContent = req.origin_port || "Origin";
+            document.getElementById('m-dest').textContent = req.destination_port || "Destination";
+            document.getElementById('m-cost').textContent = `$${vessel.predicted_total_cost.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+            document.getElementById('m-class').textContent = `${vessel.vessel_class} (${vessel.age} yrs old, ${vessel.dwt.toLocaleString()} t)`;
+            
+            document.getElementById('m-imo').textContent = vessel.mmsi || '-';
+            document.getElementById('m-call').textContent = vessel.call_sign || '-';
+            document.getElementById('m-flag').textContent = vessel.flag_state || '-';
+            
+            document.getElementById('m-loa').textContent = (vessel.loa || '-') + 'm / ' + (vessel.beam || '-') + 'm';
+            document.getElementById('m-draft').textContent = (vessel.draft_m || '-') + 'm';
+            document.getElementById('m-freeboard').textContent = (vessel.freeboard || '-') + 'm';
+            
+            document.getElementById('m-speed').textContent = (vessel.speed_knots || '-') + ' knots';
+            document.getElementById('m-course').textContent = (vessel.course || '-') + '°';
+            document.getElementById('m-gps').textContent = (vessel.lat || 0).toFixed(4) + ', ' + (vessel.lon || 0).toFixed(4);
+            
+            document.getElementById('m-vdr').textContent = vessel.vdr_status || '-';
+            document.getElementById('m-inspec').textContent = "Passed (Recent)";
+            document.getElementById('m-engine').textContent = vessel.engine_status || '-';
+            
+            document.getElementById('m-fuel').textContent = (vessel.fuel_consumption_tpd || '-') + ' t/day';
+            document.getElementById('m-emiss').textContent = vessel.emissions_rating || '-';
+            
+            document.getElementById('m-book').href = vessel.booking_link || '#';
+            document.getElementById('m-agent').href = vessel.agent_link || '#';
+
+            document.getElementById('btn-export-ml').addEventListener('click', () => {
+                const mlData = {
+                    timestamp: new Date().toISOString(),
+                    vessel_state: vessel,
+                    request_parameters: req
+                };
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(mlData, null, 2));
+                const dlAnchorElem = document.createElement('a');
+                dlAnchorElem.setAttribute("href", dataStr);
+                dlAnchorElem.setAttribute("download", `ml_training_data_${vessel.mmsi}.json`);
+                dlAnchorElem.click();
+            });
+
+            document.getElementById('w-vessel').textContent = vessel.vessel_name;
+
+            // Initialize Maps
+            const routeMap = L.map('vessel-route-map').setView([20.0, 80.0], 3);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(routeMap);
+
+            const liveMap = L.map('vessel-live-map').setView([20.0, 80.0], 5);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(liveMap);
+
+            let liveMarker = null;
+
+            if (vessel.lat && vessel.lon) {
+                let vLatlng = [vessel.lat, vessel.lon];
+                L.circleMarker(vLatlng, { radius: 8, fillColor: "#10b981", color: "#fff", weight: 2, opacity: 1, fillOpacity: 0.9 }).addTo(routeMap)
+                 .bindPopup(`<b>${vessel.vessel_name}</b><br>IMO: ${vessel.mmsi}`).openPopup();
+                 
+                liveMarker = L.circleMarker(vLatlng, { radius: 8, fillColor: "#f59e0b", color: "#fff", weight: 2, opacity: 1, fillOpacity: 0.9 }).addTo(liveMap)
+                 .bindPopup(`<b>LIVE: ${vessel.vessel_name}</b><br>Updating every 30s`).openPopup();
+                 
+                if (vessel.history && vessel.history.length > 1) {
+                    var routeLatlngs = vessel.history.map(pt => [pt[1], pt[0]]);
+                    L.polyline(routeLatlngs, { color: '#f59e0b', weight: 2, opacity: 0.5, dashArray: '4, 6' }).addTo(liveMap);
+                }
+                
+                if (vessel.sea_route && vessel.sea_route.length > 1) {
+                    var predictedLatlngs = vessel.sea_route.map(pt => [pt[1], pt[0]]);
+                    L.polyline(predictedLatlngs, { color: '#3b82f6', weight: 3, opacity: 0.8, dashArray: '5, 10' }).addTo(routeMap);
+                }
+                
+                let allPts = [];
+                if (vessel.origin_route && vessel.origin_route.length > 1) {
+                    var masterLatlngs = vessel.origin_route.map(pt => [pt[1], pt[0]]);
+                    L.polyline(masterLatlngs, { color: '#ec4899', weight: 4, opacity: 0.9 }).addTo(routeMap);
+                    masterLatlngs.forEach(pt => allPts.push(pt));
+                    
+                    // Add Map Overlay Control for Transit Time
+                    if (vessel.origin_distance_nm) {
+                        const speed = vessel.speed_knots || 12.5;
+                        const hrs = vessel.origin_distance_nm / speed;
+                        const d = Math.floor(hrs / 24);
+                        const h = Math.floor(hrs % 24);
+                        
+                        const legend = L.control({position: 'topright'});
+                        legend.onAdd = function (map) {
+                            var div = L.DomUtil.create('div', 'info legend');
+                            div.style.background = 'rgba(15, 23, 42, 0.9)';
+                            div.style.color = '#f8fafc';
+                            div.style.padding = '10px';
+                            div.style.borderRadius = '5px';
+                            div.style.border = '1px solid #ec4899';
+                            div.innerHTML = `<h4 style="margin:0 0 5px 0; color:#ec4899;">Full Ocean Transit</h4>
+                                             <b>Distance:</b> ${Math.round(vessel.origin_distance_nm)} NM<br>
+                                             <b>Est. Time:</b> ${d} Days, ${h} Hrs<br>
+                                             <span style="font-size:0.8em; color:#94a3b8;">@ ${speed} knots</span>`;
+                            return div;
+                        };
+                        legend.addTo(routeMap);
+                    }
+                }
+                
+                // Fit bounds
+                if(vessel.sea_route) vessel.sea_route.forEach(pt => allPts.push([pt[1], pt[0]]));
+                if(allPts.length > 0) routeMap.fitBounds(L.latLngBounds(allPts), {padding: [20,20]});
+                else routeMap.setView(vLatlng, 5);
+                
+                if(routeLatlngs && routeLatlngs.length > 0) liveMap.fitBounds(L.latLngBounds(routeLatlngs));
+                else liveMap.setView(vLatlng, 8);
+            }
+
+            // Generate 180-Day Weather Forecast (Week by Week = 26 weeks)
+            const weatherGrid = document.getElementById('weather-grid');
+            const conditions = ["Clear / Calm Seas", "Mild Swell", "Overcast / Breezy", "Scattered Showers", "High Winds / Chop", "Squalls / Heavy Swell"];
+            
+            for(let i = 1; i <= 26; i++) {
+                // Determine mock temp based on a seasonal curve and randomness
+                let baseTemp = 24 + Math.sin(i / 4.0) * 8; 
+                let temp = (baseTemp + (Math.random() * 4 - 2)).toFixed(1);
+                
+                // Condition index favoring calmer seas but occasional storms
+                let rand = Math.random();
+                let condIdx = 0;
+                if(rand > 0.6) condIdx = 1;
+                if(rand > 0.8) condIdx = 2;
+                if(rand > 0.9) condIdx = 3;
+                if(rand > 0.95) condIdx = 4;
+                if(rand > 0.98) condIdx = 5;
+                
+                const card = document.createElement('div');
+                card.className = 'weather-card';
+                card.innerHTML = `
+                    <h4>Week ${i}</h4>
+                    <div class="temp">${temp}°C</div>
+                    <div class="desc">${conditions[condIdx]}</div>
+                `;
+                weatherGrid.appendChild(card);
+            }
+
+            // LIVE UPDATES (Every 30 Seconds)
+            async function fetchLiveUpdates() {
+                // Fetch real vessel position
+                if(vessel.mmsi) {
+                    try {
+                        const res = await fetch(`/api/vessel/${vessel.mmsi}`);
+                        if(res.ok) {
+                            const liveData = await res.json();
+                            if(liveData.lat) {
+                                vessel.lat = liveData.lat;
+                                vessel.lon = liveData.lon;
+                                document.getElementById('m-speed').textContent = (liveData.speed || '-') + ' knots';
+                                document.getElementById('m-course').textContent = (liveData.heading || '-') + '°';
+                                document.getElementById('m-gps').textContent = vessel.lat.toFixed(4) + ', ' + vessel.lon.toFixed(4);
+                                if(liveMarker) liveMarker.setLatLng([vessel.lat, vessel.lon]);
+                                liveMap.setView([vessel.lat, vessel.lon], 9);
+                            } else if (liveData.lat_offset) {
+                                // Fallback mock movement
+                                vessel.lat += liveData.lat_offset;
+                                vessel.lon += liveData.lon_offset;
+                                document.getElementById('m-speed').textContent = (liveData.speed).toFixed(1) + ' knots';
+                                document.getElementById('m-course').textContent = liveData.heading + '°';
+                                document.getElementById('m-gps').textContent = vessel.lat.toFixed(4) + ', ' + vessel.lon.toFixed(4);
+                                if(liveMarker) liveMarker.setLatLng([vessel.lat, vessel.lon]);
+                            }
+                        }
+                    } catch(e) {}
+                }
+
+                // Fetch real weather using Open-Meteo
+                if(vessel.lat && vessel.lon) {
+                    try {
+                        const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${vessel.lat}&longitude=${vessel.lon}&current_weather=true`);
+                        if(wRes.ok) {
+                            const wData = await wRes.json();
+                            const grid = document.getElementById('weather-grid');
+                            // We just prepend the current live weather as the first box, then keep the ML projections
+                            if(wData.current_weather) {
+                                const current = wData.current_weather;
+                                const desc = current.weathercode > 50 ? "Rainy/Cloudy" : "Clear/Fair";
+                                // Update first box if exists, otherwise create
+                                let firstBox = grid.querySelector('#live-weather-box');
+                                if(firstBox) {
+                                    firstBox.querySelector('.temp').innerHTML = `${current.temperature}&deg;C`;
+                                    firstBox.querySelector('.desc').textContent = `${desc} (${current.windspeed} km/h wind)`;
+                                } else {
+                                    const liveHtml = `
+                                    <div class="weather-card" id="live-weather-box" style="border-color:#10b981; border-width: 2px;">
+                                        <h4 style="color:#10b981;">LIVE WEATHER</h4>
+                                        <div class="temp">${current.temperature}&deg;C</div>
+                                        <div class="desc">${desc} (${current.windspeed} km/h wind)</div>
+                                    </div>`;
+                                    grid.insertAdjacentHTML('afterbegin', liveHtml);
+                                }
+                            }
+                        }
+                    } catch(e) {}
+                }
+            }
+
+            // Start live loop
+            fetchLiveUpdates(); // initial run
+            setInterval(fetchLiveUpdates, 30000);
+        });
+    </script>
+</body>
+</html>

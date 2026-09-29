@@ -1,0 +1,5 @@
+port_name,country,max_draft,lat,lon,source
+Gladstone,Australia,18.0,-23.84,151.25,SYNTHETIC DEMO DATA
+Dhamra,India,18.0,20.8,86.97,SYNTHETIC DEMO DATA
+Paradip,India,15.0,20.26,86.67,SYNTHETIC DEMO DATA
+Haldia,India,8.5,22.02,88.06,SYNTHETIC DEMO DATA

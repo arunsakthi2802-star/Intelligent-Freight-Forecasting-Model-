@@ -1,0 +1,7 @@
+dataset,type,count
+freight,exact,16
+freight,logical,0
+fuel,exact,0
+fuel,logical,0
+port,exact,0
+port,logical,450

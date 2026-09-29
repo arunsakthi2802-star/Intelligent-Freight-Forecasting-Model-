@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SIH26006 Live Vessel Tracking</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-panel: rgba(30, 41, 59, 0.85);
+            --primary: #3b82f6;
+            --accent: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            height: 100vh; 
+            background: var(--bg-dark);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+        #sidebar {
+            width: 350px;
+            background: var(--bg-panel);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+        #sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        #sidebar-header h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        #vessel-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        .vessel-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .vessel-card:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+        .vessel-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+            color: #e2e8f0;
+        }
+        .vessel-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        .live-badge {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 1.5s infinite;
+        }
+        #map-container {
+            flex-grow: 1;
+            position: relative;
+        }
+        #map { 
+            height: 100%; 
+            width: 100%; 
+            background: #0f172a;
+        }
+        .nav-links {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        
+        /* Dark mode map tiles override */
+        .leaflet-layer,
+        .leaflet-control-zoom-in,
+        .leaflet-control-zoom-out,
+        .leaflet-control-attribution {
+            filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <div id="sidebar-header">
+            <h2><span class="live-badge"></span>Live AIS Feed</h2>
+            <p style="margin:0; font-size: 0.85rem; color: var(--text-muted);">Tracking Global Vessels in Real-Time</p>
+        </div>
+        <div id="vessel-list">
+            <div style="text-align:center; color: var(--text-muted); margin-top: 2rem;">Connecting to satellite stream...</div>
+        </div>
+        <div class="nav-links">
+            <a href="/freightselection">&larr; Back to Optimization ML</a>
+        </div>
+    </div>
+    
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+
+    <script>
+        var map = L.map('map').setView([20.0, 80.0], 3);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        var vesselLayerGroup = L.layerGroup().addTo(map);
+        var vesselDataMap = {}; // store layers by imo/mmsi
+
+        // We only show Live Vessels per user request.
+        function updateLiveVessels() {
+            fetch('/map/data/vessels')
+                .then(res => res.json())
+                .then(data => {
+                    vesselLayerGroup.clearLayers();
+                    const listContainer = document.getElementById('vessel-list');
+                    listContainer.innerHTML = ''; // clear list
+
+                    if (data.features && data.features.length > 0) {
+                        data.features.forEach(feature => {
+                            var latlng = [feature.geometry.coordinates[1], feature.geometry.coordinates[0]];
+                            var props = feature.properties;
+                            
+                            var isIndianBound = props.destination && props.destination.includes("(IN)");
+                            var isRecommended = isIndianBound && props.cost < 20;
+                            var markerColor = isRecommended ? "#10b981" : (isIndianBound ? "#3b82f6" : "#f59e0b");
+
+                            // 1. Draw Route Trail (History)
+                            if (props.history && props.history.length > 1) {
+                                var routeLatlngs = props.history.map(pt => [pt[1], pt[0]]);
+                                L.polyline(routeLatlngs, {
+                                    color: markerColor,
+                                    weight: 2,
+                                    opacity: 0.5,
+                                    dashArray: '4, 6'
+                                }).addTo(vesselLayerGroup);
+                            }
+                            
+                            // Draw projected trade route to India if recommended
+                            if (isRecommended) {
+                                var destLat = props.destination.includes("MUMBAI") ? 18.9 : 13.1; // Mumbai or Chennai
+                                var destLon = props.destination.includes("MUMBAI") ? 72.8 : 80.3;
+                                L.polyline([latlng, [destLat, destLon]], {
+                                    color: "#10b981",
+                                    weight: 2,
+                                    opacity: 0.8,
+                                    dashArray: '10, 10'
+                                }).addTo(vesselLayerGroup);
+                            }
+
+                            // 2. Draw Vessel Marker
+                            var marker = L.circleMarker(latlng, {
+                                radius: isRecommended ? 10 : 8,
+                                fillColor: markerColor,
+                                color: "#fff",
+                                weight: isRecommended ? 2 : 1,
+                                opacity: 1,
+                                fillOpacity: 0.9
+                            });
+                            
+                            // 3. Detailed Popup
+                            var badgeHtml = isRecommended ? `<span style="background:#10b981; color:white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 8px;">RECOMMENDED</span>` : '';
+                            var popupContent = `
+                                <div style="font-family: 'Inter', sans-serif;">
+                                    <h3 style="margin:0 0 8px 0; color:#3b82f6;">${props.name} ${badgeHtml}</h3>
+                                    <b>MMSI/IMO:</b> ${props.imo}<br/>
+                                    <b>Destination:</b> ${props.destination}<br/>
+                                    <b>ML Predicted Cost:</b> $${props.cost.toFixed(2)} / tonne<br/>
+                                    <hr style="border: 0; border-top: 1px solid #ccc; margin: 8px 0;">
+                                    <b>Class:</b> ${props.class}<br/>
+                                    <b>Speed:</b> ${props.speed} knots<br/>
+                                    <b>Heading:</b> ${props.heading}&deg;<br/>
+                                    <b>DWT:</b> ${props.dwt.toLocaleString()}
+                                </div>
+                            `;
+                            marker.bindPopup(popupContent);
+                            marker.addTo(vesselLayerGroup);
+                            
+                            vesselDataMap[props.imo] = marker;
+
+                            // 4. Add to Sidebar List
+                            var card = document.createElement('div');
+                            card.className = 'vessel-card';
+                            if (isRecommended) {
+                                card.style.borderColor = "#10b981";
+                                card.style.background = "rgba(16, 185, 129, 0.1)";
+                            }
+                            card.innerHTML = `
+                                <h3>${props.name} ${isRecommended ? '<span style="color:#10b981; font-size:0.8rem;">★ Optimal</span>' : ''}</h3>
+                                <div class="vessel-meta">
+                                    <span><b>Dest:</b> ${props.destination}</span>
+                                    <span><b>Cost:</b> $${props.cost.toFixed(2)}/t</span>
+                                    <span><b>Speed:</b> ${props.speed} kn</span>
+                                    <span><b>Class:</b> ${props.class}</span>
+                                </div>
+                            `;
+                            card.onclick = () => {
+                                map.flyTo(latlng, isRecommended ? 6 : 8, { duration: 1.5 });
+                                setTimeout(() => marker.openPopup(), 1500);
+                            };
+                            listContainer.appendChild(card);
+                        });
+                        
+                        document.getElementById('sidebar-header').querySelector('p').innerHTML = `Tracking ${data.features.length} Global Vessels in Real-Time`;
+                    } else {
+                        listContainer.innerHTML = '<div style="text-align:center; color: var(--text-muted); margin-top: 2rem;">Awaiting satellite data...</div>';
+                    }
+                }).catch(e => console.log('Error fetching vessels', e));
+        }
+
+        updateLiveVessels();
+        setInterval(updateLiveVessels, 3000);
+    </script>
+</body>
+</html>

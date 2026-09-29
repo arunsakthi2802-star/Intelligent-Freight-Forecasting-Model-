@@ -1,0 +1,15 @@
+============================================================
+VOYAGE PLAN REPORT
+============================================================
+CARGO: 75000.0 tonnes of COAL
+ORIGIN: AUSTRALIA
+DESTINATION: PARADIP
+LOADING DATE: 2024-11-15
+
+TOP VESSEL CANDIDATES:
+- Ocean King (PANAMAX) | Status: OPERATIONALLY_AVAILABLE (0.76) | Cost: $616788.5
+- Sea Wave (CAPESIZE) | Status: EN_ROUTE_TO_LOADING_PORT (0.66) | Cost: $715826.0
+
+LOGISTICS TIMES:
+- Loading: 15.0h
+- Unloading: 20.0h
