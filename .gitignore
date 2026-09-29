@@ -1,9 +1,4 @@
 # Datasets and Data folders
-Maritime Routes and Tracklets/
-data/
-freight data set/
-fuel dataset/
-predictions/
 
 # Logs and Model Artifacts
 catboost_info/
@@ -24,3 +19,12 @@ venv.bak/
 # Environment variables
 .env
 .env.*
+
+# Large dataset files (>90MB) excluded automatically
+freight data set/Tread demand/critical minerals.7z
+freight data set/UN Comtrade/UN Comtrade/US_OceanTrade.csv
+freight data set/UN Comtrade/UN Comtrade/US_TradeMatrix_20212025.csv
+freight data set/UN Comtrade/US_OceanTrade.csv/US_OceanTrade.csv
+freight data set/UN Comtrade/US_TradeMatrix_20212025.csv/US_TradeMatrix_20212025.csv
+freight data set/World bank/currency/US_ExchangeRateCrosstab.csv
+freight data set/vessel dataset/processed_AIS_dataset.csv
